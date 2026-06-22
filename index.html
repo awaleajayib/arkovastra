@@ -1,333 +1,947 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
- <head><script src="/_sdk/telemetry_sdk.js"></script>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Arko Vastra</title>
-  <script src="https://cdn.tailwindcss.com/3.4.17"></script>
-  <script src="https://cdn.jsdelivr.net/npm/lucide@0.263.0/dist/umd/lucide.min.js"></script>
-  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&amp;family=Playfair+Display:wght@500;600;700&amp;display=swap" rel="stylesheet">
-  <style>
-    :root{
-      --ink:#1f1a18;
-      --muted:#746b66;
-      --rose:#b45769;
-      --rose-deep:#9c4052;
-      --cream:#f8f3ef;
-      --line:#e9dfd8;
-      --sand:#eadfd7;
-    }
-    *{box-sizing:border-box}
-    html{scroll-behavior:smooth}
-    body{
-      margin:0;
-      font-family:'DM Sans', sans-serif;
-      color:var(--ink);
-    }
-    .serif{font-family:'Playfair Display', serif}
-    .nav-link{
-      position:relative;
-      white-space:nowrap;
-    }
-    .nav-link:after{
-      content:"";
-      position:absolute;
-      left:0;
-      bottom:-10px;
-      width:0;
-      height:2px;
-      background:var(--rose);
-      transition:width .25s ease;
-    }
-    .nav-link:hover:after,.nav-link:focus-visible:after{width:100%}
-    .hero-overlay{
-      background:linear-gradient(90deg, rgba(22,18,17,.74) 0%, rgba(22,18,17,.38) 42%, rgba(22,18,17,.08) 100%);
-    }
-    .category-card img,.product-card img,.editorial-img{
-      transition:transform .45s ease;
-    }
-    .category-card:hover img,.product-card:hover img,.editorial-wrap:hover .editorial-img{
-      transform:scale(1.045);
-    }
-    .product-card{
-      transition:transform .25s ease, box-shadow .25s ease;
-    }
-    .product-card:hover{
-      transform:translateY(-5px);
-      box-shadow:0 16px 34px rgba(36,28,24,.10);
-    }
-    .wishlist-btn.active{
-      color:var(--rose);
-      background:#fff1f3;
-      border-color:#e7a7b3;
-    }
-    .wishlist-btn.active svg{
-      fill:currentColor;
-    }
-    .fade-up{
-      opacity:0;
-      transform:translateY(18px);
-      animation:fadeUp .75s ease forwards;
-    }
-    .delay-1{animation-delay:.12s}
-    .delay-2{animation-delay:.24s}
-    .delay-3{animation-delay:.36s}
-    @keyframes fadeUp{
-      to{opacity:1;transform:translateY(0)}
-    }
-    .focus-ring:focus-visible{
-      outline:3px solid rgba(180,87,105,.35);
-      outline-offset:3px;
-    }
-    @media (max-width:768px){
-      .hero-overlay{
-        background:linear-gradient(180deg, rgba(20,17,16,.25) 0%, rgba(20,17,16,.78) 100%);
-      }
-    }
-  </style>
-  <script src="/_sdk/data_sdk.js" type="text/javascript"></script>
-  <script src="/_sdk/resizing_sdk.js" type="text/javascript"></script>
- </head>
- <body data-template-id="__page-root" class="w-full min-h-screen">
-  <div class="w-full">
-   <div data-template-id="promo-strip" class="canva-banner w-full text-center py-2 px-4">
-    <p data-template-id="promo-strip-text" class="canva-text text-sm tracking-wide"></p>
-   </div>
-   <header data-template-id="header-bg" class="canva-header sticky top-0 z-40 bg-white/95 backdrop-blur border-b border-[#eee7e1]">
-    <div class="w-full max-w-[1440px] mx-auto px-5 lg:px-10">
-     <div class="h-20 flex items-center gap-6 lg:gap-9">
-      <div class="shrink-0">
-       <h1 data-template-id="brand-logo" class="canva-text serif tracking-[0.08em]"></h1>
-      </div>
-      <nav class="hidden lg:flex items-center gap-7 text-[13px] font-semibold tracking-[0.08em] uppercase"><a data-template-id="nav-western" href="#categories" class="canva-link nav-link focus-ring"></a> <a data-template-id="nav-straightfit" href="#categories" class="canva-link nav-link focus-ring"></a> <a data-template-id="nav-traditional" href="#categories" class="canva-link nav-link focus-ring"></a> <a data-template-id="nav-custom" href="#categories" class="canva-link nav-link focus-ring"></a> <a data-template-id="nav-studio" href="#style-notes" class="canva-link nav-link focus-ring"></a>
-      </nav>
-      <div class="ml-auto hidden md:flex items-center bg-[#f6f3f1] rounded-sm px-4 py-3 w-[30%] min-w-[240px]"><i data-lucide="search" class="w-4 h-4 text-[#7b7470] mr-3"></i> <label for="product-search" class="sr-only">Search products</label> <input id="product-search" data-template-id="search-input" class="canva-input bg-transparent outline-none text-sm w-full placeholder:text-[#8b8581]" type="text">
-      </div>
-      <div class="ml-auto md:ml-0 flex items-center gap-4 lg:gap-5"><button class="focus-ring flex flex-col items-center gap-1 text-[#3d3937] hover:text-[#b45769] transition" type="button" aria-label="Profile"> <i data-lucide="user" class="w-5 h-5"></i> <span data-template-id="profile-label" class="canva-text hidden sm:block text-[10px] font-semibold uppercase tracking-wide"></span> </button> <button class="focus-ring flex flex-col items-center gap-1 text-[#3d3937] hover:text-[#b45769] transition" type="button" aria-label="Wishlist"> <i data-lucide="heart" class="w-5 h-5"></i> <span data-template-id="wishlist-label" class="canva-text hidden sm:block text-[10px] font-semibold uppercase tracking-wide"></span> </button> <button class="focus-ring relative flex flex-col items-center gap-1 text-[#3d3937] hover:text-[#b45769] transition" type="button" aria-label="Shopping bag"> <i data-lucide="shopping-bag" class="w-5 h-5"></i> <span class="absolute -top-2 -right-2 bg-[#b45769] text-white text-[9px] rounded-full min-w-[16px] h-4 flex items-center justify-center">2</span> <span data-template-id="bag-label" class="canva-text hidden sm:block text-[10px] font-semibold uppercase tracking-wide"></span> </button>
-      </div>
-     </div>
-     <nav class="lg:hidden overflow-x-auto flex gap-6 pb-3 text-[12px] font-semibold tracking-[0.08em] uppercase"><a data-template-id="mobile-nav-western" href="#categories" class="canva-link whitespace-nowrap"></a> <a data-template-id="mobile-nav-straightfit" href="#categories" class="canva-link whitespace-nowrap"></a> <a data-template-id="mobile-nav-traditional" href="#categories" class="canva-link whitespace-nowrap"></a> <a data-template-id="mobile-nav-custom" href="#categories" class="canva-link whitespace-nowrap"></a> <a data-template-id="mobile-nav-studio" href="#style-notes" class="canva-link whitespace-nowrap"></a>
-     </nav>
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Arko Vastra</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Playfair+Display:wght@500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/dist/tabler-icons.min.css">
+<style>
+:root{--ink:#1f1a18;--muted:#746b66;--rose:#b45769;--rose-deep:#9c4052;--cream:#f8f3ef;--line:#e9dfd8;--sand:#eadfd7}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:'DM Sans',sans-serif;color:var(--ink);background:#fff;font-size:14px}
+
+.promo-strip{background:var(--rose);color:#fff;text-align:center;padding:9px 16px;font-size:12px;letter-spacing:.1em;font-weight:500}
+
+header{position:sticky;top:0;z-index:100;background:rgba(255,255,255,.97);backdrop-filter:blur(8px);border-bottom:1px solid var(--line)}
+.header-inner{max-width:1280px;margin:0 auto;padding:0 20px;display:flex;align-items:center;gap:16px;height:64px}
+.brand{font-family:'Playfair Display',serif;font-size:21px;font-weight:700;color:var(--ink);letter-spacing:.06em;white-space:nowrap}
+nav{display:flex;gap:16px;font-size:11px;font-weight:600;letter-spacing:.1em;text-transform:uppercase}
+nav a{color:var(--ink);text-decoration:none;white-space:nowrap;transition:color .2s}
+nav a:hover{color:var(--rose)}
+.search-bar{display:flex;align-items:center;background:#f5f1ee;border-radius:4px;padding:7px 12px;gap:8px;flex:1;max-width:220px;margin-left:auto}
+.search-bar input{background:none;border:none;outline:none;font-size:12px;font-family:'DM Sans',sans-serif;width:100%;color:var(--ink)}
+.search-bar input::placeholder{color:#a89890}
+.hdr-icons{display:flex;gap:12px;align-items:center}
+.icon-btn{background:none;border:none;cursor:pointer;color:#3d3937;display:flex;flex-direction:column;align-items:center;gap:2px;font-size:9px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;transition:color .2s;padding:3px}
+.icon-btn:hover{color:var(--rose)}
+.icon-btn i{font-size:17px}
+.cart-wrap{position:relative}
+.cart-badge{position:absolute;top:-4px;right:-6px;background:var(--rose);color:#fff;font-size:9px;border-radius:50%;width:15px;height:15px;display:flex;align-items:center;justify-content:center;font-weight:700}
+
+/* DEMO IMAGE SYSTEM — SVG placeholders embedded inline */
+.demo-img{width:100%;height:100%;display:flex;align-items:center;justify-content:center;position:relative;overflow:hidden}
+.demo-img svg{width:100%;height:100%;position:absolute;inset:0}
+
+/* HERO */
+.hero{position:relative;height:560px;overflow:hidden;background:#2c1f1a}
+.hero-demo{position:absolute;inset:0}
+.hero-demo svg{width:100%;height:100%}
+.hero-ov{position:absolute;inset:0;background:linear-gradient(90deg,rgba(18,13,12,.82) 0%,rgba(18,13,12,.42) 55%,transparent 100%)}
+.hero-ct{position:relative;z-index:2;height:100%;max-width:1280px;margin:0 auto;padding:0 36px;display:flex;align-items:center}
+.hero-text{color:#fff;max-width:520px}
+.h-eyebrow{font-size:11px;letter-spacing:.3em;text-transform:uppercase;font-weight:600;margin-bottom:14px;opacity:.8}
+.h-title{font-family:'Playfair Display',serif;font-size:48px;line-height:1.04;margin-bottom:16px;font-weight:700}
+.h-sub{font-size:14px;line-height:1.8;opacity:.85;margin-bottom:28px;max-width:400px}
+.btn-primary{background:var(--rose);color:#fff;border:none;padding:12px 26px;font-size:11px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;cursor:pointer;font-family:'DM Sans',sans-serif;transition:background .2s}
+.btn-primary:hover{background:var(--rose-deep)}
+.btn-ghost{background:none;border:none;color:#fff;font-size:11px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;cursor:pointer;border-bottom:1.5px solid rgba(255,255,255,.6);padding:12px 0;font-family:'DM Sans',sans-serif;transition:opacity .2s}
+.btn-ghost:hover{opacity:.7}
+.hbtns{display:flex;gap:20px;align-items:center;flex-wrap:wrap}
+.hero-badge{position:absolute;right:32px;bottom:28px;z-index:2;width:104px;height:104px;border-radius:50%;background:var(--rose);color:#fff;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;transform:rotate(-8deg)}
+.hero-badge .bsm{font-size:9px;letter-spacing:.16em;text-transform:uppercase;font-weight:600}
+.hero-badge .blg{font-family:'Playfair Display',serif;font-size:26px;font-weight:700;line-height:1;margin:3px 0}
+
+/* BENEFITS */
+.benefits{border-bottom:1px solid var(--line)}
+.ben-inner{max-width:1100px;margin:0 auto;padding:14px 20px;display:grid;grid-template-columns:repeat(3,1fr)}
+.ben{display:flex;align-items:center;justify-content:center;gap:10px;font-size:13px;font-weight:500;padding:3px 0}
+.ben+.ben{border-left:1px solid var(--sand)}
+.ben i{color:var(--rose);font-size:17px}
+
+/* SECTION */
+.section{max-width:1280px;margin:0 auto;padding:52px 20px}
+.section-head{display:flex;justify-content:space-between;align-items:flex-end;margin-bottom:28px;flex-wrap:wrap;gap:10px}
+.eyebrow{font-size:11px;letter-spacing:.22em;text-transform:uppercase;font-weight:600;color:var(--rose);margin-bottom:7px}
+.sec-title{font-family:'Playfair Display',serif;font-size:28px;font-weight:700}
+.sec-sub{font-size:13px;color:#776f6b;max-width:360px;line-height:1.65}
+
+/* CATEGORIES */
+.cat-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
+.cat-card{position:relative;overflow:hidden;aspect-ratio:3/4;cursor:pointer;border:none;padding:0;background:#2c1f1a;display:block}
+.cat-card:hover .cat-demo-inner{transform:scale(1.06)}
+.cat-demo-inner{width:100%;height:100%;transition:transform .42s ease}
+.cat-ov{position:absolute;inset:0;background:linear-gradient(to top,rgba(0,0,0,.72) 0%,rgba(0,0,0,.1) 55%,transparent 100%)}
+.cat-info{position:absolute;left:12px;right:12px;bottom:12px;color:#fff;text-align:left}
+.cat-info p{font-family:'Playfair Display',serif;font-size:15px;font-weight:600;margin-bottom:3px}
+.cat-info span{font-size:10px;letter-spacing:.16em;text-transform:uppercase;opacity:.85}
+#cat-msg{margin-top:12px;font-size:13px;color:#8a7770}
+
+/* SALE */
+.sale-wrap{max-width:1280px;margin:0 auto;padding:0 20px 52px}
+.sale-inner{position:relative;overflow:hidden;min-height:290px}
+.sale-demo{position:absolute;inset:0}
+.sale-demo svg{width:100%;height:100%}
+.sale-ov{position:absolute;inset:0;background:linear-gradient(90deg,rgba(18,13,12,.92) 0%,rgba(18,13,12,.52) 55%,transparent 100%)}
+.sale-ct{position:relative;z-index:2;min-height:290px;display:flex;align-items:center;padding:36px 44px;color:#fff}
+.sale-eyebrow{font-size:11px;letter-spacing:.22em;text-transform:uppercase;font-weight:600;opacity:.7;margin-bottom:10px}
+.sale-title{font-family:'Playfair Display',serif;font-size:36px;line-height:1.08;margin-bottom:10px;font-weight:700}
+.sale-copy{font-size:13px;opacity:.85;margin-bottom:22px;max-width:380px;line-height:1.65}
+
+/* PRODUCTS */
+.prod-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:14px}
+.prod-card{background:#fff;border:1px solid #efe8e3;cursor:pointer;transition:transform .25s,box-shadow .25s}
+.prod-card:hover{transform:translateY(-4px);box-shadow:0 12px 28px rgba(36,28,24,.1)}
+.prod-img{position:relative;overflow:hidden;aspect-ratio:3/4}
+.prod-img-inner{width:100%;height:100%;transition:transform .42s}
+.prod-card:hover .prod-img-inner{transform:scale(1.06)}
+.wish-btn{position:absolute;top:9px;right:9px;width:32px;height:32px;border-radius:50%;background:rgba(255,255,255,.93);border:1px solid rgba(255,255,255,.5);display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:15px;color:#5a5250;transition:color .2s,background .2s;z-index:2}
+.wish-btn:hover,.wish-btn.active{color:var(--rose);background:#fff1f3}
+.prod-info{padding:12px}
+.prod-brand{font-size:12px;font-weight:700;margin-bottom:3px}
+.prod-name{font-size:11px;color:#716b67;margin-bottom:8px;line-height:1.45}
+.prod-prices{display:flex;align-items:baseline;gap:5px;flex-wrap:wrap}
+.prod-price{font-size:13px;font-weight:700}
+.prod-old{font-size:11px;color:#9d9691;text-decoration:line-through}
+.prod-disc{font-size:11px;color:var(--rose);font-weight:600}
+.empty-msg{text-align:center;padding:40px;color:#7b7470;display:none;grid-column:1/-1}
+
+/* EDITORIAL */
+.editorial{background:var(--cream);padding:56px 0}
+.ed-inner{max-width:1280px;margin:0 auto;padding:0 20px;display:grid;grid-template-columns:1fr 1fr;gap:56px;align-items:center}
+.ed-img-wrap{overflow:hidden;height:460px}
+.ed-img-wrap:hover .ed-img-inner{transform:scale(1.04)}
+.ed-img-inner{width:100%;height:100%;transition:transform .45s}
+.ed-title{font-family:'Playfair Display',serif;font-size:32px;line-height:1.15;margin-bottom:14px;font-weight:700}
+.ed-copy{color:#6f6763;line-height:1.8;margin-bottom:22px;font-size:13px}
+
+/* FOOTER */
+footer{background:#1c1714;color:#c5b8b1;padding:52px 20px 26px}
+.foot-inner{max-width:1280px;margin:0 auto;display:grid;grid-template-columns:1.3fr 1fr 1fr 1fr;gap:36px;margin-bottom:36px}
+.foot-brand{font-family:'Playfair Display',serif;font-size:19px;color:#fff;margin-bottom:10px;font-weight:700}
+.foot-copy{font-size:12px;line-height:1.75;color:#957e74}
+.foot-head{font-size:11px;font-weight:700;letter-spacing:.15em;text-transform:uppercase;color:#fff;margin-bottom:12px}
+footer ul{list-style:none}
+footer ul li{margin-bottom:7px}
+footer ul a{color:#957e74;text-decoration:none;font-size:12px;transition:color .2s}
+footer ul a:hover{color:var(--rose)}
+.soc-row{display:flex;gap:9px;margin-top:3px}
+.soc-btn{width:34px;height:34px;border-radius:50%;border:1px solid #3a2e2a;display:flex;align-items:center;justify-content:center;cursor:pointer;background:none;color:#957e74;font-size:15px;transition:border-color .2s,color .2s}
+.soc-btn:hover{border-color:var(--rose);color:var(--rose)}
+.foot-bottom{border-top:1px solid #2e2421;padding-top:18px;display:flex;justify-content:space-between;font-size:11px;color:#5a4e49;flex-wrap:wrap;gap:6px;max-width:1280px;margin:0 auto}
+</style>
+</head>
+<body>
+
+<div class="promo-strip">✦ Free shipping on orders above ₹999 &nbsp;|&nbsp; New arrivals every Friday &nbsp;|&nbsp; Use ARKO15 for 15% off ✦</div>
+
+<header>
+  <div class="header-inner">
+    <div class="brand">Arko Vastra</div>
+    <nav>
+      <a href="#categories">Western</a>
+      <a href="#categories">Straight-Fit</a>
+      <a href="#categories">Traditional</a>
+      <a href="#categories">Custom</a>
+      <a href="#editorial">Style Notes</a>
+    </nav>
+    <div class="search-bar">
+      <i class="ti ti-search" style="color:#a89890;font-size:14px" aria-hidden="true"></i>
+      <input type="text" id="searchInput" placeholder="Search outfits…">
     </div>
-   </header>
-   <main>
-    <section class="w-full">
-     <div class="relative w-full overflow-hidden min-h-[520px] md:min-h-[620px]"><img data-template-id="hero-image" class="canva-image absolute inset-0 w-full h-full object-cover" loading="lazy">
-      <div class="hero-overlay absolute inset-0"></div>
-      <div class="relative z-10 max-w-[1440px] mx-auto min-h-[520px] md:min-h-[620px] px-6 lg:px-12 flex items-center">
-       <div class="max-w-[640px] text-white pt-12">
-        <p data-template-id="hero-eyebrow" class="canva-text fade-up text-xs md:text-sm font-semibold tracking-[0.28em] uppercase mb-4"></p>
-        <h2 data-template-id="hero-title" class="canva-text serif fade-up delay-1 leading-[1.02] mb-5 max-w-[570px]"></h2>
-        <p data-template-id="hero-subtitle" class="canva-text fade-up delay-2 text-base md:text-lg text-white/90 max-w-[470px] leading-7 mb-8"></p>
-        <div class="fade-up delay-3 flex flex-wrap gap-4"><button data-template-id="hero-primary-button" class="canva-button focus-ring px-7 py-3.5 text-sm font-semibold tracking-[0.12em] uppercase transition hover:opacity-90" type="button" id="shop-now-btn"></button> <button data-template-id="hero-secondary-button" class="canva-button focus-ring px-1 py-3.5 text-sm font-semibold tracking-[0.12em] uppercase border-b border-white/80 text-white transition hover:text-[#ffdfe5]" type="button" id="explore-edit-btn"></button>
-        </div>
-       </div>
-      </div>
-      <div data-template-id="hero-badge" class="canva-panel absolute right-6 bottom-6 md:right-12 md:bottom-10 z-10 hidden sm:flex flex-col items-center justify-center w-28 h-28 rounded-full text-center rotate-[-8deg] shadow-lg"><span data-template-id="hero-badge-small" class="canva-text text-[10px] tracking-[0.18em] uppercase font-semibold"></span> <span data-template-id="hero-badge-large" class="canva-text serif leading-none my-1"></span> <span data-template-id="hero-badge-bottom" class="canva-text text-[10px] tracking-[0.12em] uppercase font-semibold"></span>
-      </div>
-     </div>
-    </section>
-    <section data-template-id="benefits-strip" class="canva-section border-b border-[#eee6df]">
-     <div class="max-w-[1200px] mx-auto px-5 py-5 grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-0">
-      <div class="flex items-center justify-center gap-3 md:border-r md:border-[#e8ddd5]"><i data-lucide="truck" class="w-5 h-5 text-[#b45769]"></i>
-       <p data-template-id="benefit-1" class="canva-text text-sm font-medium tracking-wide"></p>
-      </div>
-      <div class="flex items-center justify-center gap-3 md:border-r md:border-[#e8ddd5]"><i data-lucide="scissors" class="w-5 h-5 text-[#b45769]"></i>
-       <p data-template-id="benefit-2" class="canva-text text-sm font-medium tracking-wide"></p>
-      </div>
-      <div class="flex items-center justify-center gap-3"><i data-lucide="badge-check" class="w-5 h-5 text-[#b45769]"></i>
-       <p data-template-id="benefit-3" class="canva-text text-sm font-medium tracking-wide"></p>
-      </div>
-     </div>
-    </section>
-    <section id="categories" class="max-w-[1440px] mx-auto px-5 lg:px-10 py-16 md:py-20">
-     <div class="flex flex-col md:flex-row md:items-end md:justify-between gap-4 mb-9">
-      <div>
-       <p data-template-id="categories-eyebrow" class="canva-text text-xs tracking-[0.22em] uppercase font-semibold mb-3"></p>
-       <h2 data-template-id="categories-title" class="canva-text serif"></h2>
-      </div>
-      <p data-template-id="categories-subtitle" class="canva-text text-sm md:text-base text-[#776f6b] max-w-[430px]"></p>
-     </div>
-     <div class="grid grid-cols-2 lg:grid-cols-4 gap-4 md:gap-5"><button class="category-card focus-ring relative overflow-hidden group aspect-[3/4]" data-category="Western Outfits" type="button"> <img data-template-id="category-western-image" class="canva-image w-full h-full object-cover" loading="lazy">
-       <div class="absolute inset-0 bg-gradient-to-t from-black/60 via-black/10 to-transparent"></div>
-       <div class="absolute left-4 right-4 bottom-4 text-left">
-        <p data-template-id="category-western-label" class="canva-text text-white serif"></p><span data-template-id="category-western-cta" class="canva-text text-white/90 text-xs uppercase tracking-[0.18em] mt-1 inline-block"></span>
-       </div></button> <button class="category-card focus-ring relative overflow-hidden group aspect-[3/4]" data-category="Straight-Fit" type="button"> <img data-template-id="category-straightfit-image" class="canva-image w-full h-full object-cover" loading="lazy">
-       <div class="absolute inset-0 bg-gradient-to-t from-black/60 via-black/10 to-transparent"></div>
-       <div class="absolute left-4 right-4 bottom-4 text-left">
-        <p data-template-id="category-straightfit-label" class="canva-text text-white serif"></p><span data-template-id="category-straightfit-cta" class="canva-text text-white/90 text-xs uppercase tracking-[0.18em] mt-1 inline-block"></span>
-       </div></button> <button class="category-card focus-ring relative overflow-hidden group aspect-[3/4]" data-category="Traditional Fusion" type="button"> <img data-template-id="category-traditional-image" class="canva-image w-full h-full object-cover" loading="lazy">
-       <div class="absolute inset-0 bg-gradient-to-t from-black/60 via-black/10 to-transparent"></div>
-       <div class="absolute left-4 right-4 bottom-4 text-left">
-        <p data-template-id="category-traditional-label" class="canva-text text-white serif"></p><span data-template-id="category-traditional-cta" class="canva-text text-white/90 text-xs uppercase tracking-[0.18em] mt-1 inline-block"></span>
-       </div></button> <button class="category-card focus-ring relative overflow-hidden group aspect-[3/4]" data-category="Custom Designs" type="button"> <img data-template-id="category-custom-image" class="canva-image w-full h-full object-cover" loading="lazy">
-       <div class="absolute inset-0 bg-gradient-to-t from-black/60 via-black/10 to-transparent"></div>
-       <div class="absolute left-4 right-4 bottom-4 text-left">
-        <p data-template-id="category-custom-label" class="canva-text text-white serif"></p><span data-template-id="category-custom-cta" class="canva-text text-white/90 text-xs uppercase tracking-[0.18em] mt-1 inline-block"></span>
-       </div></button>
-     </div>
-     <p id="category-message" class="mt-5 text-sm text-[#8a7770]" aria-live="polite"></p>
-    </section>
-    <section data-template-id="sale-banner-bg" class="canva-section max-w-[1440px] mx-auto px-5 lg:px-10 mb-16 md:mb-20">
-     <div class="relative overflow-hidden min-h-[280px] md:min-h-[340px]"><img data-template-id="sale-banner-image" class="canva-image absolute inset-0 w-full h-full object-cover" loading="lazy">
-      <div class="absolute inset-0 bg-gradient-to-r from-[#1b1615]/85 via-[#1b1615]/45 to-transparent"></div>
-      <div class="relative z-10 min-h-[280px] md:min-h-[340px] flex items-center px-7 md:px-12">
-       <div class="max-w-[520px] text-white">
-        <p data-template-id="sale-eyebrow" class="canva-text text-xs uppercase tracking-[0.24em] font-semibold mb-3"></p>
-        <h2 data-template-id="sale-title" class="canva-text serif leading-tight mb-3"></h2>
-        <p data-template-id="sale-copy" class="canva-text text-white/85 text-sm md:text-base mb-6 max-w-[430px]"></p><button data-template-id="sale-button" id="sale-shop-btn" type="button" class="canva-button focus-ring px-6 py-3 text-sm uppercase font-semibold tracking-[0.12em]"></button>
-       </div>
-      </div>
-     </div>
-    </section>
-    <section id="trending" class="max-w-[1440px] mx-auto px-5 lg:px-10 pb-16 md:pb-20">
-     <div class="flex flex-col md:flex-row md:items-end md:justify-between gap-4 mb-9">
-      <div>
-       <p data-template-id="trending-eyebrow" class="canva-text text-xs uppercase tracking-[0.22em] font-semibold mb-3"></p>
-       <h2 data-template-id="trending-title" class="canva-text serif"></h2>
-      </div><button data-template-id="view-all-button" class="canva-button focus-ring self-start md:self-auto text-sm font-semibold uppercase tracking-[0.16em] border-b border-[#2f2a27] pb-1" type="button"></button>
-     </div>
-     <div id="product-grid" class="grid grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6">
-      <article class="product-card bg-white border border-[#efe8e3]" data-product-name="printed western dress women fusion outfit">
-       <div class="relative overflow-hidden aspect-[3/4]"><img data-template-id="product-1-image" class="canva-image w-full h-full object-cover" loading="lazy"> <button class="wishlist-btn focus-ring absolute top-3 right-3 w-9 h-9 rounded-full bg-white/90 border border-white flex items-center justify-center transition" type="button" aria-label="Add product to wishlist"> <i data-lucide="heart" class="w-4 h-4"></i> </button>
-       </div>
-       <div class="p-4">
-        <p data-template-id="product-1-brand" class="canva-text text-sm font-semibold mb-1"></p>
-        <p data-template-id="product-1-title" class="canva-text text-sm text-[#716b67] mb-2"></p>
-        <div class="flex flex-wrap items-baseline gap-2"><span data-template-id="product-1-price" class="canva-text text-sm font-semibold"></span> <span data-template-id="product-1-old-price" class="canva-text text-xs line-through text-[#9d9691]"></span> <span data-template-id="product-1-discount" class="canva-text text-xs text-[#b45769]"></span>
-        </div>
-       </div>
-      </article>
-      <article class="product-card bg-white border border-[#efe8e3]" data-product-name="straight fit trousers women co ord set">
-       <div class="relative overflow-hidden aspect-[3/4]"><img data-template-id="product-2-image" class="canva-image w-full h-full object-cover" loading="lazy"> <button class="wishlist-btn focus-ring absolute top-3 right-3 w-9 h-9 rounded-full bg-white/90 border border-white flex items-center justify-center transition" type="button" aria-label="Add product to wishlist"> <i data-lucide="heart" class="w-4 h-4"></i> </button>
-       </div>
-       <div class="p-4">
-        <p data-template-id="product-2-brand" class="canva-text text-sm font-semibold mb-1"></p>
-        <p data-template-id="product-2-title" class="canva-text text-sm text-[#716b67] mb-2"></p>
-        <div class="flex flex-wrap items-baseline gap-2"><span data-template-id="product-2-price" class="canva-text text-sm font-semibold"></span> <span data-template-id="product-2-old-price" class="canva-text text-xs line-through text-[#9d9691]"></span> <span data-template-id="product-2-discount" class="canva-text text-xs text-[#b45769]"></span>
-        </div>
-       </div>
-      </article>
-      <article class="product-card bg-white border border-[#efe8e3]" data-product-name="kurti fusion traditional women">
-       <div class="relative overflow-hidden aspect-[3/4]"><img data-template-id="product-3-image" class="canva-image w-full h-full object-cover" loading="lazy"> <button class="wishlist-btn focus-ring absolute top-3 right-3 w-9 h-9 rounded-full bg-white/90 border border-white flex items-center justify-center transition" type="button" aria-label="Add product to wishlist"> <i data-lucide="heart" class="w-4 h-4"></i> </button>
-       </div>
-       <div class="p-4">
-        <p data-template-id="product-3-brand" class="canva-text text-sm font-semibold mb-1"></p>
-        <p data-template-id="product-3-title" class="canva-text text-sm text-[#716b67] mb-2"></p>
-        <div class="flex flex-wrap items-baseline gap-2"><span data-template-id="product-3-price" class="canva-text text-sm font-semibold"></span> <span data-template-id="product-3-old-price" class="canva-text text-xs line-through text-[#9d9691]"></span> <span data-template-id="product-3-discount" class="canva-text text-xs text-[#b45769]"></span>
-        </div>
-       </div>
-      </article>
-      <article class="product-card bg-white border border-[#efe8e3]" data-product-name="blazer set women western co ord">
-       <div class="relative overflow-hidden aspect-[3/4]"><img data-template-id="product-4-image" class="canva-image w-full h-full object-cover" loading="lazy"> <button class="wishlist-btn focus-ring absolute top-3 right-3 w-9 h-9 rounded-full bg-white/90 border border-white flex items-center justify-center transition" type="button" aria-label="Add product to wishlist"> <i data-lucide="heart" class="w-4 h-4"></i> </button>
-       </div>
-       <div class="p-4">
-        <p data-template-id="product-4-brand" class="canva-text text-sm font-semibold mb-1"></p>
-        <p data-template-id="product-4-title" class="canva-text text-sm text-[#716b67] mb-2"></p>
-        <div class="flex flex-wrap items-baseline gap-2"><span data-template-id="product-4-price" class="canva-text text-sm font-semibold"></span> <span data-template-id="product-4-old-price" class="canva-text text-xs line-through text-[#9d9691]"></span> <span data-template-id="product-4-discount" class="canva-text text-xs text-[#b45769]"></span>
-        </div>
-       </div>
-      </article>
-     </div>
-     <p id="empty-search" class="hidden text-center py-12 text-[#7b7470]">No products found for your search.</p>
-    </section>
-    <section id="style-notes" data-template-id="editorial-bg" class="canva-section py-16 md:py-20">
-     <div class="max-w-[1440px] mx-auto px-5 lg:px-10 grid lg:grid-cols-2 gap-8 lg:gap-12 items-center">
-      <div class="editorial-wrap overflow-hidden"><img data-template-id="editorial-image" class="canva-image editorial-img w-full h-[360px] md:h-[520px] object-cover" loading="lazy">
-      </div>
-      <div class="max-w-[540px] lg:pl-4">
-       <p data-template-id="editorial-eyebrow" class="canva-text text-xs uppercase tracking-[0.22em] font-semibold mb-4"></p>
-       <h2 data-template-id="editorial-title" class="canva-text serif leading-tight mb-5"></h2>
-       <p data-template-id="editorial-copy" class="canva-text text-[#6f6763] leading-7 mb-7"></p><button data-template-id="editorial-button" class="canva-button focus-ring px-6 py-3 text-sm uppercase tracking-[0.12em] font-semibold" type="button"></button>
-      </div>
-     </div>
-    </section>
-   </main>
-   <footer data-template-id="footer-bg" class="canva-footer">
-    <div class="max-w-[1440px] mx-auto px-5 lg:px-10 py-12">
-     <div class="grid md:grid-cols-4 gap-8">
-      <div>
-       <h2 data-template-id="footer-brand" class="canva-text serif mb-4"></h2>
-       <p data-template-id="footer-copy" class="canva-text text-sm leading-6 max-w-[260px]"></p>
-      </div>
-      <div>
-       <h3 data-template-id="footer-shop-heading" class="canva-text text-sm font-semibold uppercase tracking-[0.16em] mb-4"></h3>
-       <ul class="space-y-2 text-sm">
-        <li><a data-template-id="footer-shop-1" class="canva-link hover:text-[#b45769]" href="#categories"></a></li>
-        <li><a data-template-id="footer-shop-2" class="canva-link hover:text-[#b45769]" href="#categories"></a></li>
-        <li><a data-template-id="footer-shop-3" class="canva-link hover:text-[#b45769]" href="#categories"></a></li>
-        <li><a data-template-id="footer-shop-4" class="canva-link hover:text-[#b45769]" href="#categories"></a></li>
-       </ul>
-      </div>
-      <div>
-       <h3 data-template-id="footer-help-heading" class="canva-text text-sm font-semibold uppercase tracking-[0.16em] mb-4"></h3>
-       <ul class="space-y-2 text-sm">
-        <li><a data-template-id="footer-help-1" class="canva-link hover:text-[#b45769]" href="#"></a></li>
-        <li><a data-template-id="footer-help-2" class="canva-link hover:text-[#b45769]" href="#"></a></li>
-        <li><a data-template-id="footer-help-3" class="canva-link hover:text-[#b45769]" href="#"></a></li>
-        <li><a data-template-id="footer-help-4" class="canva-link hover:text-[#b45769]" href="#"></a></li>
-       </ul>
-      </div>
-      <div>
-       <h3 data-template-id="footer-social-heading" class="canva-text text-sm font-semibold uppercase tracking-[0.16em] mb-4"></h3>
-       <div class="flex gap-3"><button class="focus-ring w-10 h-10 rounded-full border border-[#ded3cb] flex items-center justify-center hover:bg-[#f7ecee]" type="button" aria-label="Instagram"><i data-lucide="instagram" class="w-4 h-4"></i></button> <button class="focus-ring w-10 h-10 rounded-full border border-[#ded3cb] flex items-center justify-center hover:bg-[#f7ecee]" type="button" aria-label="Facebook"><i data-lucide="facebook" class="w-4 h-4"></i></button> <button class="focus-ring w-10 h-10 rounded-full border border-[#ded3cb] flex items-center justify-center hover:bg-[#f7ecee]" type="button" aria-label="Twitter"><i data-lucide="twitter" class="w-4 h-4"></i></button>
-       </div>
-      </div>
-     </div>
-     <div class="mt-10 pt-6 border-t border-[#dfd5ce] flex flex-col sm:flex-row justify-between gap-3 text-xs text-[#827974]">
-      <p data-template-id="footer-copyright" class="canva-text"></p>
-      <p data-template-id="footer-note" class="canva-text"></p>
-     </div>
+    <div class="hdr-icons">
+      <button class="icon-btn" aria-label="Profile"><i class="ti ti-user" aria-hidden="true"></i><span>Profile</span></button>
+      <button class="icon-btn" aria-label="Wishlist"><i class="ti ti-heart" aria-hidden="true"></i><span>Wishlist</span></button>
+      <button class="icon-btn cart-wrap" aria-label="Bag"><i class="ti ti-shopping-bag" aria-hidden="true"></i><span class="cart-badge">2</span><span>Bag</span></button>
     </div>
-   </footer>
   </div>
-  <script src="/_sdk/editing_sdk.js"></script>
-  <script>
-    document.addEventListener('DOMContentLoaded', () => {
-      lucide.createIcons();
+</header>
 
-      const scrollToTrending = () => {
-        document.getElementById('trending').scrollIntoView({ behavior: 'smooth' });
-      };
+<main>
 
-      document.getElementById('shop-now-btn').addEventListener('click', scrollToTrending);
-      document.getElementById('sale-shop-btn').addEventListener('click', scrollToTrending);
-      document.getElementById('explore-edit-btn').addEventListener('click', () => {
-        document.getElementById('categories').scrollIntoView({ behavior: 'smooth' });
-      });
+<!-- HERO with SVG demo scene -->
+<section class="hero">
+  <div class="hero-demo">
+    <svg viewBox="0 0 1280 560" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <linearGradient id="hbg" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#3d1f2a"/><stop offset="100%" stop-color="#1a0d12"/></linearGradient>
+        <linearGradient id="hfabric" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#c4718a"/><stop offset="100%" stop-color="#8c3a52"/></linearGradient>
+        <linearGradient id="hskin" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#d4956b"/><stop offset="100%" stop-color="#b87048"/></linearGradient>
+        <linearGradient id="hgold" x1="0" y1="0" x2="1" y2="0"><stop offset="0%" stop-color="#d4a843"/><stop offset="100%" stop-color="#f0c96e"/></linearGradient>
+        <radialGradient id="hglow" cx="70%" cy="30%"><stop offset="0%" stop-color="#c4718a" stop-opacity=".18"/><stop offset="100%" stop-color="#c4718a" stop-opacity="0"/></radialGradient>
+      </defs>
+      <!-- bg -->
+      <rect width="1280" height="560" fill="url(#hbg)"/>
+      <rect width="1280" height="560" fill="url(#hglow)"/>
+      <!-- subtle pattern -->
+      <g opacity=".07">
+        <circle cx="900" cy="100" r="180" fill="#c4718a"/>
+        <circle cx="1100" cy="350" r="120" fill="#8c3a52"/>
+        <circle cx="750" cy="450" r="80" fill="#d4a843"/>
+      </g>
+      <!-- decorative lines -->
+      <g stroke="#c4718a" stroke-opacity=".12" stroke-width="1" fill="none">
+        <line x1="600" y1="0" x2="1280" y2="560"/>
+        <line x1="700" y1="0" x2="1280" y2="420"/>
+        <line x1="800" y1="0" x2="1280" y2="280"/>
+      </g>
+      <!-- Figure: woman silhouette in lehenga -->
+      <!-- body -->
+      <ellipse cx="900" cy="170" rx="38" ry="45" fill="url(#hskin)"/>
+      <!-- face -->
+      <ellipse cx="900" cy="148" rx="22" ry="26" fill="url(#hskin)"/>
+      <!-- hair -->
+      <ellipse cx="900" cy="130" rx="23" ry="18" fill="#1a0a0f"/>
+      <ellipse cx="878" cy="148" rx="8" ry="20" fill="#1a0a0f"/>
+      <ellipse cx="922" cy="148" rx="8" ry="20" fill="#1a0a0f"/>
+      <!-- neck -->
+      <rect x="892" y="172" width="16" height="18" rx="4" fill="url(#hskin)"/>
+      <!-- blouse top -->
+      <path d="M860 190 Q900 178 940 190 L950 240 Q900 252 850 240 Z" fill="#9c3a52"/>
+      <!-- lehenga skirt -->
+      <path d="M845 238 Q900 252 955 238 L985 420 Q900 450 815 420 Z" fill="url(#hfabric)"/>
+      <!-- lehenga flare -->
+      <path d="M815 420 Q900 460 985 420 L1010 490 Q900 530 790 490 Z" fill="#a84060" opacity=".9"/>
+      <!-- dupatta -->
+      <path d="M862 195 Q820 240 800 340 Q780 380 790 430" stroke="#d4a843" stroke-width="18" fill="none" stroke-opacity=".7" stroke-linecap="round"/>
+      <!-- gold border lehenga -->
+      <path d="M815 420 Q900 460 985 420" stroke="url(#hgold)" stroke-width="4" fill="none"/>
+      <path d="M790 490 Q900 530 1010 490" stroke="url(#hgold)" stroke-width="3" fill="none"/>
+      <!-- embroidery dots -->
+      <g fill="#f0c96e" opacity=".6">
+        <circle cx="870" cy="320" r="3"/><circle cx="900" cy="310" r="3"/><circle cx="930" cy="320" r="3"/>
+        <circle cx="855" cy="360" r="2.5"/><circle cx="885" cy="350" r="2.5"/><circle cx="915" cy="350" r="2.5"/><circle cx="945" cy="360" r="2.5"/>
+        <circle cx="840" cy="400" r="2"/><circle cx="870" cy="390" r="2"/><circle cx="900" cy="385" r="2"/><circle cx="930" cy="390" r="2"/><circle cx="960" cy="400" r="2"/>
+      </g>
+      <!-- arm right -->
+      <path d="M935 210 Q970 230 980 280" stroke="url(#hskin)" stroke-width="18" fill="none" stroke-linecap="round"/>
+      <!-- arm left -->
+      <path d="M865 210 Q830 235 840 290" stroke="url(#hskin)" stroke-width="18" fill="none" stroke-linecap="round"/>
+      <!-- bangles -->
+      <circle cx="980" cy="278" r="8" fill="none" stroke="#d4a843" stroke-width="3"/>
+      <circle cx="840" cy="288" r="8" fill="none" stroke="#d4a843" stroke-width="3"/>
+      <!-- jewellery neck -->
+      <path d="M882 185 Q900 196 918 185" stroke="#d4a843" stroke-width="2.5" fill="none"/>
+      <circle cx="900" cy="197" r="4" fill="#d4a843"/>
+      <!-- background figure 2 (faded) -->
+      <g opacity=".25">
+        <ellipse cx="1080" cy="160" rx="25" ry="30" fill="#d4956b"/>
+        <path d="M1055 190 Q1080 180 1105 190 L1115 230 Q1080 242 1045 230 Z" fill="#7c5a8c"/>
+        <path d="M1042 228 Q1080 242 1118 228 L1135 400 Q1080 425 1025 400 Z" fill="#9c6ab0"/>
+        <ellipse cx="1080" cy="140" rx="26" ry="24" fill="#1a0a0f"/>
+      </g>
+      <!-- background figure 3 (more faded) -->
+      <g opacity=".15">
+        <ellipse cx="730" cy="175" rx="22" ry="28" fill="#d4956b"/>
+        <path d="M708 200 Q730 190 752 200 L760 236 Q730 246 700 236 Z" fill="#4a7c5a"/>
+        <path d="M698 234 Q730 246 762 234 L778 390 Q730 412 682 390 Z" fill="#5a9c6a"/>
+        <ellipse cx="730" cy="155" rx="23" ry="20" fill="#1a0a0f"/>
+      </g>
+      <!-- floating petals decoration -->
+      <g opacity=".5">
+        <ellipse cx="1150" cy="80" rx="12" ry="6" fill="#d4a843" transform="rotate(30 1150 80)"/>
+        <ellipse cx="1170" cy="110" rx="9" ry="5" fill="#c4718a" transform="rotate(-20 1170 110)"/>
+        <ellipse cx="1130" cy="130" rx="7" ry="4" fill="#d4a843" transform="rotate(50 1130 130)"/>
+        <ellipse cx="1200" cy="70" rx="6" ry="3" fill="#c4718a" transform="rotate(10 1200 70)"/>
+      </g>
+    </svg>
+  </div>
+  <div class="hero-ov"></div>
+  <div class="hero-ct">
+    <div class="hero-text">
+      <p class="h-eyebrow">New Collection — Monsoon '25</p>
+      <h1 class="h-title" style="font-family:'Playfair Display',serif">Wear What<br>Moves You</h1>
+      <p class="h-sub">From boardrooms to brunches — curated outfits blending Indian heritage with contemporary silhouettes.</p>
+      <div class="hbtns">
+        <button class="btn-primary" onclick="document.getElementById('trending').scrollIntoView({behavior:'smooth'})">Shop Now</button>
+        <button class="btn-ghost" onclick="document.getElementById('categories').scrollIntoView({behavior:'smooth'})">Explore Edit →</button>
+      </div>
+    </div>
+  </div>
+  <div class="hero-badge">
+    <span class="bsm">Up To</span>
+    <span class="blg" style="font-family:'Playfair Display',serif">40%</span>
+    <span class="bsm">Off</span>
+  </div>
+</section>
 
-      document.querySelectorAll('.wishlist-btn').forEach(btn => {
-        btn.addEventListener('click', () => {
-          btn.classList.toggle('active');
-          btn.setAttribute('aria-pressed', String(btn.classList.contains('active')));
-        });
-      });
+<!-- BENEFITS -->
+<div class="benefits">
+  <div class="ben-inner">
+    <div class="ben"><i class="ti ti-truck" aria-hidden="true"></i> Free delivery above ₹999</div>
+    <div class="ben"><i class="ti ti-scissors" aria-hidden="true"></i> Custom tailoring available</div>
+    <div class="ben"><i class="ti ti-rosette-discount-check" aria-hidden="true"></i> 100% authentic fabrics</div>
+  </div>
+</div>
 
-      const categoryMessage = document.getElementById('category-message');
-      document.querySelectorAll('.category-card').forEach(card => {
-        card.addEventListener('click', () => {
-          categoryMessage.textContent = `Showing curated picks for ${card.dataset.category}.`;
-          document.getElementById('trending').scrollIntoView({ behavior: 'smooth' });
-        });
-      });
+<!-- CATEGORIES -->
+<section id="categories" class="section">
+  <div class="section-head">
+    <div><p class="eyebrow">Shop by Category</p><h2 class="sec-title">Find Your Style</h2></div>
+    <p class="sec-sub">From everyday casuals to statement fusion pieces — every woman, every occasion.</p>
+  </div>
+  <div class="cat-grid">
 
-      const searchInput = document.getElementById('product-search');
-      const products = Array.from(document.querySelectorAll('.product-card'));
-      const emptySearch = document.getElementById('empty-search');
+    <!-- Western -->
+    <button class="cat-card" onclick="filterCat('western')">
+      <div class="cat-demo-inner">
+        <svg viewBox="0 0 300 400" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:100%;display:block">
+          <defs>
+            <linearGradient id="w1" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#2c3e50"/><stop offset="100%" stop-color="#1a252f"/></linearGradient>
+            <linearGradient id="w2" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#e8b4c8"/><stop offset="100%" stop-color="#c47090"/></linearGradient>
+          </defs>
+          <rect width="300" height="400" fill="url(#w1)"/>
+          <circle cx="220" cy="60" r="80" fill="#3d5270" opacity=".4"/>
+          <!-- figure -->
+          <ellipse cx="150" cy="95" rx="22" ry="26" fill="#d4956b"/>
+          <ellipse cx="150" cy="76" rx="16" ry="18" fill="#1a0a08"/>
+          <rect x="142" y="118" width="16" height="14" rx="4" fill="#d4956b"/>
+          <!-- western dress - fitted top -->
+          <path d="M118 130 Q150 120 182 130 L188 195 Q150 205 112 195 Z" fill="#c45870"/>
+          <!-- flared skirt -->
+          <path d="M110 194 Q150 205 190 194 L210 340 Q150 360 90 340 Z" fill="url(#w2)"/>
+          <!-- belt -->
+          <rect x="112" y="190" width="76" height="12" rx="3" fill="#8c3a52"/>
+          <rect x="146" y="190" width="8" height="12" fill="#d4a843"/>
+          <!-- arms -->
+          <path d="M118 145 Q90 170 88 210" stroke="#d4956b" stroke-width="14" fill="none" stroke-linecap="round"/>
+          <path d="M182 145 Q210 170 212 210" stroke="#d4956b" stroke-width="14" fill="none" stroke-linecap="round"/>
+          <!-- purse -->
+          <rect x="208" y="200" width="28" height="22" rx="4" fill="#8c3a52"/>
+          <path d="M212 200 Q222 188 232 200" stroke="#8c3a52" stroke-width="3" fill="none"/>
+          <!-- shoes -->
+          <ellipse cx="125" cy="352" rx="18" ry="8" fill="#2c1a22"/>
+          <ellipse cx="175" cy="352" rx="18" ry="8" fill="#2c1a22"/>
+          <rect x="122" y="335" width="6" height="20" fill="#2c1a22"/>
+          <rect x="172" y="335" width="6" height="20" fill="#2c1a22"/>
+        </svg>
+      </div>
+      <div class="cat-ov"></div>
+      <div class="cat-info"><p>Western Outfits</p><span>Shop Now →</span></div>
+    </button>
 
-      searchInput.addEventListener('input', (event) => {
-        const term = event.target.value.trim().toLowerCase();
-        let visibleCount = 0;
+    <!-- Straight Fit -->
+    <button class="cat-card" onclick="filterCat('straight')">
+      <div class="cat-demo-inner">
+        <svg viewBox="0 0 300 400" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:100%;display:block">
+          <defs>
+            <linearGradient id="s1" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#1a3a2a"/><stop offset="100%" stop-color="#0d1f16"/></linearGradient>
+            <linearGradient id="s2" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#4a9a6a"/><stop offset="100%" stop-color="#2a6a44"/></linearGradient>
+          </defs>
+          <rect width="300" height="400" fill="url(#s1)"/>
+          <circle cx="80" cy="340" r="100" fill="#2a5a3a" opacity=".3"/>
+          <!-- figure -->
+          <ellipse cx="150" cy="92" rx="21" ry="25" fill="#c4845a"/>
+          <ellipse cx="150" cy="74" rx="15" ry="17" fill="#1a0a08"/>
+          <rect x="143" y="114" width="14" height="14" rx="3" fill="#c4845a"/>
+          <!-- straight kurti -->
+          <path d="M120 126 Q150 116 180 126 L182 310 Q150 318 118 310 Z" fill="url(#s2)"/>
+          <!-- collar -->
+          <path d="M138 126 L150 138 L162 126" stroke="#1a6a44" stroke-width="2" fill="none"/>
+          <!-- print details -->
+          <g fill="#6ab87a" opacity=".5">
+            <circle cx="135" cy="170" r="4"/><circle cx="155" cy="165" r="3"/><circle cx="170" cy="175" r="4"/>
+            <circle cx="130" cy="210" r="3"/><circle cx="150" cy="205" r="4"/><circle cx="168" cy="212" r="3"/>
+            <circle cx="138" cy="250" r="4"/><circle cx="158" cy="245" r="3"/><circle cx="172" cy="252" r="4"/>
+          </g>
+          <!-- sleeves -->
+          <path d="M120 130 Q96 150 92 185" stroke="#2a6a44" stroke-width="22" fill="none" stroke-linecap="round"/>
+          <path d="M180 130 Q204 150 208 185" stroke="#2a6a44" stroke-width="22" fill="none" stroke-linecap="round"/>
+          <!-- pants -->
+          <path d="M118 308 L108 380 L138 380 L150 340 L162 380 L192 380 L182 308 Z" fill="#1a4a2a"/>
+          <!-- dupatta -->
+          <path d="M162 128 Q190 180 195 280" stroke="#8ad4a4" stroke-width="14" fill="none" stroke-opacity=".8" stroke-linecap="round"/>
+        </svg>
+      </div>
+      <div class="cat-ov"></div>
+      <div class="cat-info"><p>Straight-Fit</p><span>Shop Now →</span></div>
+    </button>
 
-        products.forEach(card => {
-          const visible = !term || card.dataset.productName.toLowerCase().includes(term);
-          card.classList.toggle('hidden', !visible);
-          if (visible) visibleCount++;
-        });
+    <!-- Traditional Fusion -->
+    <button class="cat-card" onclick="filterCat('traditional')">
+      <div class="cat-demo-inner">
+        <svg viewBox="0 0 300 400" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:100%;display:block">
+          <defs>
+            <linearGradient id="t1" x1="0" y1="1" x2="1" y2="0"><stop offset="0%" stop-color="#2a1a3a"/><stop offset="100%" stop-color="#1a0d25"/></linearGradient>
+            <linearGradient id="t2" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#8a50c8"/><stop offset="100%" stop-color="#5a2a8c"/></linearGradient>
+            <linearGradient id="tgold" x1="0" y1="0" x2="1" y2="0"><stop offset="0%" stop-color="#d4a843"/><stop offset="100%" stop-color="#f0c96e"/></linearGradient>
+          </defs>
+          <rect width="300" height="400" fill="url(#t1)"/>
+          <circle cx="240" cy="80" r="100" fill="#4a2a6a" opacity=".3"/>
+          <!-- figure -->
+          <ellipse cx="150" cy="90" rx="20" ry="24" fill="#c4845a"/>
+          <ellipse cx="150" cy="73" rx="14" ry="17" fill="#1a0a08"/>
+          <rect x="143" y="112" width="14" height="12" rx="3" fill="#c4845a"/>
+          <!-- saree blouse -->
+          <path d="M122 122 Q150 113 178 122 L180 165 Q150 174 120 165 Z" fill="#5a2a8c"/>
+          <!-- saree drape - pleats -->
+          <path d="M120 165 Q150 174 180 165 L178 280 Q150 288 122 280 Z" fill="url(#t2)"/>
+          <!-- saree pallu -->
+          <path d="M178 130 Q210 170 215 300 Q210 340 200 380" stroke="#7a40b8" stroke-width="28" fill="none" stroke-opacity=".85" stroke-linecap="round"/>
+          <!-- pleated bottom -->
+          <path d="M108 278 Q150 290 192 278 L200 380 Q150 395 100 380 Z" fill="#5a2a8c"/>
+          <!-- gold borders -->
+          <path d="M108 278 Q150 290 192 278" stroke="url(#tgold)" stroke-width="3" fill="none"/>
+          <path d="M100 380 Q150 395 200 380" stroke="url(#tgold)" stroke-width="3" fill="none"/>
+          <!-- embroidery -->
+          <g fill="#d4a843" opacity=".7">
+            <circle cx="135" cy="200" r="3"/><circle cx="150" cy="195" r="3"/><circle cx="165" cy="200" r="3"/>
+            <circle cx="130" cy="230" r="2.5"/><circle cx="145" cy="225" r="2.5"/><circle cx="160" cy="225" r="2.5"/><circle cx="172" cy="230" r="2.5"/>
+          </g>
+          <!-- arms -->
+          <path d="M122 135 Q98 158 95 195" stroke="#c4845a" stroke-width="13" fill="none" stroke-linecap="round"/>
+          <path d="M178 135 Q202 158 205 195" stroke="#c4845a" stroke-width="13" fill="none" stroke-linecap="round"/>
+          <!-- bangles -->
+          <circle cx="95" cy="193" r="7" fill="none" stroke="#d4a843" stroke-width="2.5"/>
+          <circle cx="205" cy="193" r="7" fill="none" stroke="#d4a843" stroke-width="2.5"/>
+          <!-- necklace -->
+          <path d="M132 120 Q150 130 168 120" stroke="#d4a843" stroke-width="2" fill="none"/>
+          <circle cx="150" cy="131" r="4" fill="#d4a843"/>
+        </svg>
+      </div>
+      <div class="cat-ov"></div>
+      <div class="cat-info"><p>Traditional Fusion</p><span>Shop Now →</span></div>
+    </button>
 
-        emptySearch.classList.toggle('hidden', visibleCount !== 0);
-      });
-    });
-  </script>
- <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'a0f8ecb6e0d40b19',t:'MTc4MjEwNjg5NC4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+    <!-- Custom -->
+    <button class="cat-card" onclick="filterCat('custom')">
+      <div class="cat-demo-inner">
+        <svg viewBox="0 0 300 400" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:100%;display:block">
+          <defs>
+            <linearGradient id="c1" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#3a1a1a"/><stop offset="100%" stop-color="#1f0d0d"/></linearGradient>
+            <linearGradient id="c2" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#c43a3a"/><stop offset="100%" stop-color="#8c1a1a"/></linearGradient>
+            <linearGradient id="cgold" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#e8c84a"/><stop offset="100%" stop-color="#c4a030"/></linearGradient>
+          </defs>
+          <rect width="300" height="400" fill="url(#c1)"/>
+          <circle cx="60" cy="60" r="120" fill="#5a1a1a" opacity=".25"/>
+          <!-- figure -->
+          <ellipse cx="150" cy="88" rx="20" ry="24" fill="#c4845a"/>
+          <ellipse cx="150" cy="71" rx="14" ry="16" fill="#1a0808"/>
+          <rect x="143" y="110" width="14" height="12" rx="3" fill="#c4845a"/>
+          <!-- bridal blouse -->
+          <path d="M120 120 Q150 110 180 120 L182 168 Q150 178 118 168 Z" fill="#8c1a1a"/>
+          <!-- lehenga -->
+          <path d="M112 166 Q150 178 188 166 L205 340 Q150 365 95 340 Z" fill="url(#c2)"/>
+          <!-- heavy embroidery lehenga -->
+          <g fill="url(#cgold)" opacity=".75">
+            <path d="M130 185 Q150 180 170 185 Q150 195 130 185 Z"/>
+            <path d="M122 215 Q150 208 178 215 Q150 225 122 215 Z"/>
+            <path d="M115 248 Q150 240 185 248 Q150 260 115 248 Z"/>
+            <path d="M110 282 Q150 272 190 282 Q150 295 110 282 Z"/>
+            <path d="M108 318 Q150 307 192 318 Q150 332 108 318 Z"/>
+          </g>
+          <!-- gold border -->
+          <path d="M95 340 Q150 365 205 340" stroke="url(#cgold)" stroke-width="5" fill="none"/>
+          <!-- dupatta heavy -->
+          <path d="M162 120 Q200 180 205 340" stroke="#c43a3a" stroke-width="26" fill="none" stroke-opacity=".7" stroke-linecap="round"/>
+          <path d="M162 120 Q200 180 205 340" stroke="url(#cgold)" stroke-width="2" fill="none" stroke-opacity=".9" stroke-linecap="round"/>
+          <!-- arms -->
+          <path d="M120 132 Q96 155 94 192" stroke="#c4845a" stroke-width="13" fill="none" stroke-linecap="round"/>
+          <path d="M180 132 Q204 155 206 192" stroke="#c4845a" stroke-width="13" fill="none" stroke-linecap="round"/>
+          <!-- heavy bangles -->
+          <g stroke="url(#cgold)" stroke-width="3" fill="none">
+            <circle cx="94" cy="190" r="7"/><circle cx="94" cy="200" r="7"/>
+            <circle cx="206" cy="190" r="7"/><circle cx="206" cy="200" r="7"/>
+          </g>
+          <!-- maang tikka -->
+          <circle cx="150" cy="65" r="4" fill="#d4a843"/>
+          <line x1="150" y1="65" x2="150" y2="52" stroke="#d4a843" stroke-width="1.5"/>
+          <!-- nath -->
+          <circle cx="158" cy="88" r="5" fill="none" stroke="#d4a843" stroke-width="2"/>
+        </svg>
+      </div>
+      <div class="cat-ov"></div>
+      <div class="cat-info"><p>Custom Designs</p><span>Shop Now →</span></div>
+    </button>
+
+  </div>
+  <p id="cat-msg"></p>
+</section>
+
+<!-- SALE BANNER -->
+<div class="sale-wrap">
+  <div class="sale-inner">
+    <div class="sale-demo">
+      <svg viewBox="0 0 1280 310" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:100%;display:block">
+        <defs>
+          <linearGradient id="sbg" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#1a0d0f"/><stop offset="100%" stop-color="#3a1a20"/></linearGradient>
+        </defs>
+        <rect width="1280" height="310" fill="url(#sbg)"/>
+        <circle cx="900" cy="155" r="200" fill="#c4718a" opacity=".08"/>
+        <circle cx="1100" cy="60" r="120" fill="#d4a843" opacity=".06"/>
+        <!-- fabric rolls on right side -->
+        <g transform="translate(750,40)" opacity=".6">
+          <ellipse cx="80" cy="30" rx="80" ry="30" fill="#8c3a52"/>
+          <rect x="0" y="30" width="160" height="180" rx="4" fill="#a84060"/>
+          <ellipse cx="80" cy="210" rx="80" ry="30" fill="#8c3a52"/>
+          <!-- fabric pattern lines -->
+          <g stroke="#d4a843" stroke-width="1" opacity=".4">
+            <line x1="20" y1="40" x2="20" y2="200"/><line x1="50" y1="40" x2="50" y2="200"/>
+            <line x1="80" y1="40" x2="80" y2="200"/><line x1="110" y1="40" x2="110" y2="200"/>
+            <line x1="140" y1="40" x2="140" y2="200"/>
+          </g>
+        </g>
+        <g transform="translate(960,20)" opacity=".45">
+          <ellipse cx="60" cy="24" rx="60" ry="24" fill="#5a2a8c"/>
+          <rect x="0" y="24" width="120" height="220" rx="4" fill="#7a40b0"/>
+          <ellipse cx="60" cy="244" rx="60" ry="24" fill="#5a2a8c"/>
+        </g>
+        <g transform="translate(1100,60)" opacity=".35">
+          <ellipse cx="50" cy="20" rx="50" ry="20" fill="#1a4a2a"/>
+          <rect x="0" y="20" width="100" height="190" rx="4" fill="#2a6a44"/>
+          <ellipse cx="50" cy="210" rx="50" ry="20" fill="#1a4a2a"/>
+        </g>
+        <!-- hanging garment silhouette -->
+        <path d="M1180 0 Q1200 60 1195 180 Q1190 240 1180 310" stroke="#c4718a" stroke-width="30" fill="none" opacity=".2" stroke-linecap="round"/>
+      </svg>
+    </div>
+    <div class="sale-ov"></div>
+    <div class="sale-ct">
+      <div>
+        <p class="sale-eyebrow">Limited Time Offer</p>
+        <h2 class="sale-title" style="font-family:'Playfair Display',serif">Monsoon Sale<br>Is Live</h2>
+        <p class="sale-copy">Up to 40% off on bestsellers — straight-fit kurtas, fusion sets & western dresses. While stocks last.</p>
+        <button class="btn-primary" onclick="document.getElementById('trending').scrollIntoView({behavior:'smooth'})">Shop the Sale</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- PRODUCTS -->
+<section id="trending" class="section" style="padding-top:20px">
+  <div class="section-head">
+    <div><p class="eyebrow">Trending Now</p><h2 class="sec-title">New Arrivals</h2></div>
+    <button class="btn-primary" style="font-size:11px;padding:9px 20px">View All</button>
+  </div>
+
+  <div class="prod-grid" id="prodGrid">
+
+    <!-- Product helper: inline SVG fashion illustrations -->
+
+    <article class="prod-card" data-tags="western dress printed fusion floral midi">
+      <div class="prod-img">
+        <div class="prod-img-inner">
+          <svg viewBox="0 0 300 400" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:100%;display:block">
+            <rect width="300" height="400" fill="#f5e8f0"/>
+            <circle cx="220" cy="80" r="100" fill="#e8c8d8" opacity=".5"/>
+            <ellipse cx="150" cy="90" rx="22" ry="26" fill="#d4956b"/>
+            <ellipse cx="150" cy="72" rx="16" ry="18" fill="#2a1208"/>
+            <rect x="143" y="113" width="15" height="13" rx="3" fill="#d4956b"/>
+            <path d="M116 124 Q150 114 184 124 L186 195 Q150 204 114 195 Z" fill="#c45870"/>
+            <g fill="#fff" opacity=".4"><circle cx="135" cy="145" r="4"/><circle cx="155" cy="138" r="3"/><circle cx="168" cy="150" r="4"/><circle cx="128" cy="162" r="3"/><circle cx="148" cy="158" r="4"/><circle cx="170" cy="155" r="3"/></g>
+            <path d="M110 193 Q150 204 190 193 L208 350 Q150 368 92 350 Z" fill="#e080a0"/>
+            <g fill="#c45870" opacity=".5"><circle cx="130" cy="240" r="5"/><circle cx="155" cy="228" r="4"/><circle cx="175" cy="244" r="5"/><circle cx="120" cy="278" r="4"/><circle cx="148" cy="265" r="5"/><circle cx="172" cy="272" r="4"/><circle cx="110" cy="310" r="4"/><circle cx="140" cy="300" r="5"/><circle cx="165" cy="308" r="4"/></g>
+            <path d="M116 138 Q90 162 88 205" stroke="#d4956b" stroke-width="14" fill="none" stroke-linecap="round"/>
+            <path d="M184 138 Q210 162 212 205" stroke="#d4956b" stroke-width="14" fill="none" stroke-linecap="round"/>
+            <text x="150" y="392" text-anchor="middle" font-size="10" fill="#8a5870" font-family="sans-serif">Fusion Midi Dress</text>
+          </svg>
+        </div>
+        <button class="wish-btn" aria-label="Wishlist" onclick="toggleWish(this)"><i class="ti ti-heart" aria-hidden="true"></i></button>
+      </div>
+      <div class="prod-info">
+        <p class="prod-brand">Arko Studio</p>
+        <p class="prod-name">Floral Printed Fusion Midi Dress</p>
+        <div class="prod-prices"><span class="prod-price">₹1,849</span><span class="prod-old">₹2,599</span><span class="prod-disc">29% off</span></div>
+      </div>
+    </article>
+
+    <article class="prod-card" data-tags="straight fit trousers co-ord set linen women">
+      <div class="prod-img">
+        <div class="prod-img-inner">
+          <svg viewBox="0 0 300 400" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:100%;display:block">
+            <rect width="300" height="400" fill="#e8f2ec"/>
+            <circle cx="80" cy="320" r="120" fill="#c8e0d0" opacity=".5"/>
+            <ellipse cx="150" cy="88" rx="20" ry="24" fill="#c4845a"/>
+            <ellipse cx="150" cy="71" rx="14" ry="17" fill="#1a0a08"/>
+            <rect x="143" y="110" width="14" height="13" rx="3" fill="#c4845a"/>
+            <path d="M120 122 Q150 112 180 122 L182 200 Q150 208 118 200 Z" fill="#3a8a5a"/>
+            <g fill="#5aaa7a" opacity=".45">
+              <circle cx="136" cy="145" r="4"/><circle cx="155" cy="140" r="3.5"/><circle cx="170" cy="148" r="4"/>
+              <circle cx="130" cy="172" r="3.5"/><circle cx="150" cy="167" r="4"/><circle cx="168" cy="174" r="3.5"/>
+            </g>
+            <path d="M120 198 L110 350 L140 350 L150 290 L160 350 L190 350 L180 198 Z" fill="#2a6a42"/>
+            <path d="M120 126 Q96 148 93 185" stroke="#3a8a5a" stroke-width="20" fill="none" stroke-linecap="round"/>
+            <path d="M180 126 Q204 148 207 185" stroke="#3a8a5a" stroke-width="20" fill="none" stroke-linecap="round"/>
+            <path d="M180 125 Q205 170 210 290" stroke="#8ad4a4" stroke-width="12" fill="none" stroke-opacity=".8" stroke-linecap="round"/>
+            <text x="150" y="392" text-anchor="middle" font-size="10" fill="#2a6a42" font-family="sans-serif">Co-ord Set</text>
+          </svg>
+        </div>
+        <button class="wish-btn" aria-label="Wishlist" onclick="toggleWish(this)"><i class="ti ti-heart" aria-hidden="true"></i></button>
+      </div>
+      <div class="prod-info">
+        <p class="prod-brand">Vastra Edit</p>
+        <p class="prod-name">Ethnic Print Straight-Fit Co-ord Set</p>
+        <div class="prod-prices"><span class="prod-price">₹2,299</span><span class="prod-old">₹3,100</span><span class="prod-disc">26% off</span></div>
+      </div>
+    </article>
+
+    <article class="prod-card" data-tags="traditional kurti ethnic embroidered organza women">
+      <div class="prod-img">
+        <div class="prod-img-inner">
+          <svg viewBox="0 0 300 400" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:100%;display:block">
+            <rect width="300" height="400" fill="#f0eaf8"/>
+            <circle cx="240" cy="360" r="120" fill="#dccced" opacity=".5"/>
+            <ellipse cx="150" cy="88" rx="20" ry="24" fill="#c4845a"/>
+            <ellipse cx="150" cy="71" rx="14" ry="17" fill="#1a0a08"/>
+            <rect x="143" y="110" width="14" height="12" rx="3" fill="#c4845a"/>
+            <path d="M118 120 Q150 110 182 120 L186 330 Q150 340 114 330 Z" fill="#8a50c8"/>
+            <path d="M118 124 Q96 146 93 190" stroke="#8a50c8" stroke-width="22" fill="none" stroke-linecap="round"/>
+            <path d="M182 124 Q204 146 207 190" stroke="#8a50c8" stroke-width="22" fill="none" stroke-linecap="round"/>
+            <g fill="#d4a843" opacity=".7">
+              <circle cx="138" cy="155" r="3"/><circle cx="150" cy="150" r="3.5"/><circle cx="162" cy="155" r="3"/>
+              <circle cx="133" cy="185" r="3"/><circle cx="148" cy="180" r="3.5"/><circle cx="163" cy="180" r="3"/><circle cx="172" cy="188" r="3"/>
+              <circle cx="128" cy="218" r="3"/><circle cx="145" cy="212" r="3.5"/><circle cx="160" cy="212" r="3"/><circle cx="174" cy="220" r="3"/>
+              <circle cx="124" cy="252" r="3"/><circle cx="143" cy="246" r="3.5"/><circle cx="158" cy="246" r="3"/><circle cx="175" cy="254" r="3"/>
+            </g>
+            <path d="M118 330 L108 380 L140 380 L150 356 L160 380 L192 380 L182 330 Z" fill="#5a2a9a"/>
+            <text x="150" y="397" text-anchor="middle" font-size="10" fill="#5a2a9a" font-family="sans-serif">Embroidered Kurti</text>
+          </svg>
+        </div>
+        <button class="wish-btn" aria-label="Wishlist" onclick="toggleWish(this)"><i class="ti ti-heart" aria-hidden="true"></i></button>
+      </div>
+      <div class="prod-info">
+        <p class="prod-brand">Heritage Line</p>
+        <p class="prod-name">Appliqué Work Kurti & Pant Set</p>
+        <div class="prod-prices"><span class="prod-price">₹1,599</span><span class="prod-old">₹2,199</span><span class="prod-disc">27% off</span></div>
+      </div>
+    </article>
+
+    <article class="prod-card" data-tags="blazer co-ord set western jacket women ethnic">
+      <div class="prod-img">
+        <div class="prod-img-inner">
+          <svg viewBox="0 0 300 400" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:100%;display:block">
+            <rect width="300" height="400" fill="#eeeaf2"/>
+            <circle cx="60" cy="100" r="100" fill="#d8d0e8" opacity=".4"/>
+            <ellipse cx="150" cy="86" rx="20" ry="24" fill="#d4956b"/>
+            <ellipse cx="150" cy="69" rx="14" ry="17" fill="#1a0a08"/>
+            <rect x="143" y="108" width="14" height="12" rx="3" fill="#d4956b"/>
+            <!-- blazer -->
+            <path d="M115 118 Q150 108 185 118 L192 260 Q150 270 108 260 Z" fill="#2a2040"/>
+            <path d="M115 118 L140 145 L150 120 L160 145 L185 118" fill="#1a1430"/>
+            <!-- lapels -->
+            <path d="M115 118 L138 150 L150 120" fill="#3a3060"/>
+            <path d="M185 118 L162 150 L150 120" fill="#3a3060"/>
+            <!-- buttons -->
+            <g fill="#d4a843"><circle cx="150" cy="175" r="3"/><circle cx="150" cy="198" r="3"/><circle cx="150" cy="221" r="3"/></g>
+            <!-- pants -->
+            <path d="M108 258 L98 380 L138 380 L150 320 L162 380 L202 380 L192 258 Z" fill="#2a2040"/>
+            <!-- arms -->
+            <path d="M115 130 Q90 155 88 200" stroke="#2a2040" stroke-width="22" fill="none" stroke-linecap="round"/>
+            <path d="M185 130 Q210 155 212 200" stroke="#2a2040" stroke-width="22" fill="none" stroke-linecap="round"/>
+            <!-- cuffs -->
+            <rect x="83" y="196" width="16" height="10" rx="2" fill="#3a3060"/>
+            <rect x="201" y="196" width="16" height="10" rx="2" fill="#3a3060"/>
+            <text x="150" y="397" text-anchor="middle" font-size="10" fill="#2a2040" font-family="sans-serif">Blazer Co-ord Set</text>
+          </svg>
+        </div>
+        <button class="wish-btn" aria-label="Wishlist" onclick="toggleWish(this)"><i class="ti ti-heart" aria-hidden="true"></i></button>
+      </div>
+      <div class="prod-info">
+        <p class="prod-brand">Arko Studio</p>
+        <p class="prod-name">Ethnic Blazer 3-Piece Co-ord Set</p>
+        <div class="prod-prices"><span class="prod-price">₹3,199</span><span class="prod-old">₹4,299</span><span class="prod-disc">26% off</span></div>
+      </div>
+    </article>
+
+    <article class="prod-card" data-tags="traditional saree gown fusion draped women">
+      <div class="prod-img">
+        <div class="prod-img-inner">
+          <svg viewBox="0 0 300 400" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:100%;display:block">
+            <rect width="300" height="400" fill="#fdf0f5"/>
+            <circle cx="180" cy="200" r="160" fill="#f8d8e8" opacity=".4"/>
+            <ellipse cx="150" cy="88" rx="20" ry="24" fill="#c4845a"/>
+            <ellipse cx="150" cy="71" rx="14" ry="17" fill="#1a0a08"/>
+            <rect x="143" y="110" width="14" height="12" rx="3" fill="#c4845a"/>
+            <path d="M122 120 Q150 110 178 120 L180 162 Q150 170 120 162 Z" fill="#9c2a5a"/>
+            <path d="M118 160 Q150 170 182 160 L188 340 Q150 358 112 340 Z" fill="#c43a7a"/>
+            <!-- saree pleats -->
+            <g stroke="#a82860" stroke-width="1.5" fill="none" opacity=".6">
+              <line x1="128" y1="165" x2="122" y2="345"/><line x1="138" y1="164" x2="134" y2="344"/>
+              <line x1="148" y1="164" x2="146" y2="344"/><line x1="158" y1="164" x2="158" y2="344"/>
+              <line x1="168" y1="165" x2="170" y2="343"/>
+            </g>
+            <path d="M178 122 Q215 180 220 340" stroke="#e060a0" stroke-width="26" fill="none" stroke-opacity=".75" stroke-linecap="round"/>
+            <g fill="#d4a843" opacity=".8">
+              <path d="M120 160 Q150 170 180 160" stroke="#d4a843" stroke-width="3" fill="none"/>
+              <path d="M112 340 Q150 358 188 340" stroke="#d4a843" stroke-width="3" fill="none"/>
+            </g>
+            <path d="M122 132 Q96 155 93 194" stroke="#c4845a" stroke-width="13" fill="none" stroke-linecap="round"/>
+            <circle cx="93" cy="193" r="6" fill="none" stroke="#d4a843" stroke-width="2.5"/>
+            <text x="150" y="392" text-anchor="middle" font-size="10" fill="#9c2a5a" font-family="sans-serif">Fusion Saree Gown</text>
+          </svg>
+        </div>
+        <button class="wish-btn" aria-label="Wishlist" onclick="toggleWish(this)"><i class="ti ti-heart" aria-hidden="true"></i></button>
+      </div>
+      <div class="prod-info">
+        <p class="prod-brand">Heritage Line</p>
+        <p class="prod-name">Draped Fusion Saree Gown</p>
+        <div class="prod-prices"><span class="prod-price">₹4,499</span><span class="prod-old">₹5,999</span><span class="prod-disc">25% off</span></div>
+      </div>
+    </article>
+
+    <article class="prod-card" data-tags="western dress puff sleeve floral fit flare midi">
+      <div class="prod-img">
+        <div class="prod-img-inner">
+          <svg viewBox="0 0 300 400" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:100%;display:block">
+            <rect width="300" height="400" fill="#fff3e8"/>
+            <circle cx="50" cy="50" r="90" fill="#ffd8a8" opacity=".4"/>
+            <ellipse cx="150" cy="88" rx="20" ry="24" fill="#d4956b"/>
+            <ellipse cx="150" cy="71" rx="14" ry="17" fill="#1a0a08"/>
+            <rect x="143" y="110" width="14" height="12" rx="3" fill="#d4956b"/>
+            <path d="M120 120 Q150 110 180 120 L182 185 Q150 192 118 185 Z" fill="#e87a3a"/>
+            <path d="M108 183 Q150 195 192 183 L210 360 Q150 378 90 360 Z" fill="#f0a060"/>
+            <!-- floral pattern -->
+            <g fill="#e85a20" opacity=".5">
+              <circle cx="130" cy="230" r="6"/><circle cx="155" cy="218" r="5"/><circle cx="175" cy="235" r="6"/>
+              <circle cx="120" cy="270" r="5"/><circle cx="148" cy="260" r="6"/><circle cx="172" cy="268" r="5"/>
+              <circle cx="113" cy="310" r="5"/><circle cx="142" cy="300" r="6"/><circle cx="168" cy="308" r="5"/>
+            </g>
+            <!-- puff sleeves -->
+            <path d="M120 122 Q85 108 80 155" stroke="#e87a3a" stroke-width="24" fill="none" stroke-linecap="round"/>
+            <path d="M180 122 Q215 108 220 155" stroke="#e87a3a" stroke-width="24" fill="none" stroke-linecap="round"/>
+            <path d="M80 155 Q84 175 96 185" stroke="#d4956b" stroke-width="14" fill="none" stroke-linecap="round"/>
+            <path d="M220 155 Q216 175 204 185" stroke="#d4956b" stroke-width="14" fill="none" stroke-linecap="round"/>
+            <text x="150" y="392" text-anchor="middle" font-size="10" fill="#e87a3a" font-family="sans-serif">Puff Sleeve Dress</text>
+          </svg>
+        </div>
+        <button class="wish-btn" aria-label="Wishlist" onclick="toggleWish(this)"><i class="ti ti-heart" aria-hidden="true"></i></button>
+      </div>
+      <div class="prod-info">
+        <p class="prod-brand">Vastra Edit</p>
+        <p class="prod-name">Puff Sleeve Floral Fit & Flare Dress</p>
+        <div class="prod-prices"><span class="prod-price">₹1,999</span><span class="prod-old">₹2,800</span><span class="prod-disc">29% off</span></div>
+      </div>
+    </article>
+
+    <article class="prod-card" data-tags="traditional straight kurti long ethnic women cotton">
+      <div class="prod-img">
+        <div class="prod-img-inner">
+          <svg viewBox="0 0 300 400" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:100%;display:block">
+            <rect width="300" height="400" fill="#e8f4f0"/>
+            <circle cx="250" cy="250" r="130" fill="#c0e0d0" opacity=".35"/>
+            <ellipse cx="150" cy="88" rx="20" ry="24" fill="#c4845a"/>
+            <ellipse cx="150" cy="71" rx="14" ry="17" fill="#1a0a08"/>
+            <rect x="143" y="110" width="14" height="12" rx="3" fill="#c4845a"/>
+            <path d="M116 120 Q150 110 184 120 L186 320 Q150 330 114 320 Z" fill="#1a7a5a"/>
+            <!-- v neck -->
+            <path d="M136 120 L150 140 L164 120" stroke="#0a5a3a" stroke-width="2" fill="none"/>
+            <!-- block print pattern -->
+            <g fill="#0a5a3a" opacity=".4">
+              <rect x="130" y="158" width="12" height="12" rx="2"/><rect x="156" y="158" width="12" height="12" rx="2"/>
+              <rect x="130" y="186" width="12" height="12" rx="2"/><rect x="156" y="186" width="12" height="12" rx="2"/>
+              <rect x="130" y="214" width="12" height="12" rx="2"/><rect x="156" y="214" width="12" height="12" rx="2"/>
+              <rect x="130" y="242" width="12" height="12" rx="2"/><rect x="156" y="242" width="12" height="12" rx="2"/>
+              <rect x="130" y="270" width="12" height="12" rx="2"/><rect x="156" y="270" width="12" height="12" rx="2"/>
+              <rect x="130" y="298" width="12" height="12" rx="2"/><rect x="156" y="298" width="12" height="12" rx="2"/>
+            </g>
+            <path d="M116 124 Q93 147 90 190" stroke="#1a7a5a" stroke-width="22" fill="none" stroke-linecap="round"/>
+            <path d="M184 124 Q207 147 210 190" stroke="#1a7a5a" stroke-width="22" fill="none" stroke-linecap="round"/>
+            <path d="M114 318 L104 380 L140 380 L150 352 L160 380 L196 380 L186 318 Z" fill="#0d5a40"/>
+            <text x="150" y="397" text-anchor="middle" font-size="10" fill="#1a7a5a" font-family="sans-serif">Block Print Kurti</text>
+          </svg>
+        </div>
+        <button class="wish-btn" aria-label="Wishlist" onclick="toggleWish(this)"><i class="ti ti-heart" aria-hidden="true"></i></button>
+      </div>
+      <div class="prod-info">
+        <p class="prod-brand">Heritage Line</p>
+        <p class="prod-name">Long Block Print Straight Kurta Set</p>
+        <div class="prod-prices"><span class="prod-price">₹1,349</span><span class="prod-old">₹1,899</span><span class="prod-disc">29% off</span></div>
+      </div>
+    </article>
+
+    <article class="prod-card" data-tags="custom bridal lehenga designer bespoke wedding">
+      <div class="prod-img">
+        <div class="prod-img-inner">
+          <svg viewBox="0 0 300 400" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:100%;display:block">
+            <rect width="300" height="400" fill="#fff8ec"/>
+            <circle cx="150" cy="200" r="180" fill="#f8e8c0" opacity=".35"/>
+            <ellipse cx="150" cy="86" rx="20" ry="24" fill="#c4845a"/>
+            <ellipse cx="150" cy="69" rx="14" ry="16" fill="#1a0808"/>
+            <rect x="143" y="108" width="14" height="12" rx="3" fill="#c4845a"/>
+            <path d="M120 118 Q150 108 180 118 L182 164 Q150 172 118 164 Z" fill="#8c1a1a"/>
+            <path d="M110 162 Q150 174 190 162 L208 345 Q150 368 92 345 Z" fill="#c43a1a"/>
+            <!-- heavy lehenga embroidery -->
+            <g fill="#d4a843" opacity=".8">
+              <path d="M128 178 Q150 172 172 178 Q150 188 128 178Z"/>
+              <path d="M120 205 Q150 197 180 205 Q150 217 120 205Z"/>
+              <path d="M114 235 Q150 226 186 235 Q150 248 114 235Z"/>
+              <path d="M108 267 Q150 257 192 267 Q150 282 108 267Z"/>
+              <path d="M104 300 Q150 289 196 300 Q150 316 104 300Z"/>
+              <path d="M100 335 Q150 322 200 335 Q150 352 100 335Z"/>
+            </g>
+            <path d="M92 345 Q150 368 208 345" stroke="#d4a843" stroke-width="5" fill="none"/>
+            <path d="M180 120 Q215 185 220 345" stroke="#c43a1a" stroke-width="25" fill="none" stroke-opacity=".72" stroke-linecap="round"/>
+            <path d="M180 120 Q215 185 220 345" stroke="#d4a843" stroke-width="2" fill="none" stroke-linecap="round"/>
+            <path d="M120 130 Q95 155 92 194" stroke="#c4845a" stroke-width="13" fill="none" stroke-linecap="round"/>
+            <g stroke="#d4a843" stroke-width="2.5" fill="none">
+              <circle cx="92" cy="192" r="7"/><circle cx="92" cy="204" r="7"/>
+            </g>
+            <circle cx="150" cy="63" r="4" fill="#d4a843"/>
+            <line x1="150" y1="63" x2="150" y2="50" stroke="#d4a843" stroke-width="1.5"/>
+            <text x="150" y="392" text-anchor="middle" font-size="10" fill="#8c1a1a" font-family="sans-serif">Bridal Lehenga</text>
+          </svg>
+        </div>
+        <button class="wish-btn" aria-label="Wishlist" onclick="toggleWish(this)"><i class="ti ti-heart" aria-hidden="true"></i></button>
+      </div>
+      <div class="prod-info">
+        <p class="prod-brand">Arko Bespoke</p>
+        <p class="prod-name">Designer Bridal Lehenga Choli</p>
+        <div class="prod-prices"><span class="prod-price">₹18,000</span><span class="prod-old">₹24,000</span><span class="prod-disc">25% off</span></div>
+      </div>
+    </article>
+
+  </div>
+  <p id="emptyMsg" class="empty-msg">No products found. Try a different search term.</p>
+</section>
+
+<!-- EDITORIAL -->
+<section id="editorial" class="editorial">
+  <div class="ed-inner">
+    <div class="ed-img-wrap">
+      <div class="ed-img-inner">
+        <svg viewBox="0 0 600 460" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:100%;display:block">
+          <defs>
+            <linearGradient id="ebg" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#3a1a2a"/><stop offset="100%" stop-color="#1a0d18"/></linearGradient>
+            <linearGradient id="efab" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#7a50b8"/><stop offset="100%" stop-color="#4a2a8c"/></linearGradient>
+          </defs>
+          <rect width="600" height="460" fill="url(#ebg)"/>
+          <circle cx="450" cy="100" r="220" fill="#5a2a8a" opacity=".15"/>
+          <circle cx="100" cy="380" r="160" fill="#c47090" opacity=".1"/>
+          <!-- main figure - editorial pose -->
+          <ellipse cx="300" cy="110" rx="32" ry="38" fill="#c4845a"/>
+          <ellipse cx="300" cy="84" rx="23" ry="26" fill="#1a0a08"/>
+          <!-- elaborate hair up -->
+          <ellipse cx="300" cy="70" rx="24" ry="18" fill="#1a0a08"/>
+          <ellipse cx="278" cy="82" rx="9" ry="22" fill="#1a0a08"/>
+          <ellipse cx="322" cy="82" rx="9" ry="22" fill="#1a0a08"/>
+          <circle cx="300" cy="58" r="6" fill="#d4a843"/>
+          <!-- neck -->
+          <rect x="292" y="144" width="16" height="18" rx="4" fill="#c4845a"/>
+          <!-- indo western dress - fitted top -->
+          <path d="M260 160 Q300 148 340 160 L344 235 Q300 246 256 235 Z" fill="#5a2a8c"/>
+          <!-- pleated palazzo bottom -->
+          <path d="M252 233 Q300 246 348 233 L370 430 Q300 448 230 430 Z" fill="url(#efab)"/>
+          <!-- vertical pleats -->
+          <g stroke="#3a1a6a" stroke-width="1.5" fill="none" opacity=".5">
+            <path d="M262 236 Q258 320 255 430"/><path d="M278 238 Q276 322 272 430"/>
+            <path d="M294 238 Q294 322 290 430"/><path d="M310 238 Q312 322 308 430"/>
+            <path d="M326 237 Q330 321 328 430"/><path d="M340 236 Q346 320 344 430"/>
+          </g>
+          <!-- gold trim top to bottom -->
+          <path d="M252 233 Q300 246 348 233" stroke="#d4a843" stroke-width="3" fill="none"/>
+          <path d="M230 430 Q300 448 370 430" stroke="#d4a843" stroke-width="3" fill="none"/>
+          <!-- left arm - hand on hip -->
+          <path d="M260 172 Q228 200 220 240 Q218 260 228 268" stroke="#c4845a" stroke-width="18" fill="none" stroke-linecap="round"/>
+          <!-- right arm - outstretched -->
+          <path d="M340 172 Q378 195 400 235" stroke="#c4845a" stroke-width="18" fill="none" stroke-linecap="round"/>
+          <!-- gold embroidery top -->
+          <g fill="#d4a843" opacity=".75">
+            <circle cx="285" cy="180" r="3.5"/><circle cx="300" cy="175" r="3.5"/><circle cx="315" cy="180" r="3.5"/>
+            <circle cx="278" cy="202" r="3"/><circle cx="295" cy="197" r="3.5"/><circle cx="310" cy="197" r="3"/><circle cx="324" cy="204" r="3"/>
+          </g>
+          <!-- jewellery -->
+          <path d="M274 158 Q300 170 326 158" stroke="#d4a843" stroke-width="2.5" fill="none"/>
+          <circle cx="300" cy="171" r="5" fill="#d4a843"/>
+          <g fill="#d4a843" opacity=".8">
+            <circle cx="272" cy="157" r="3"/><circle cx="328" cy="157" r="3"/>
+            <circle cx="264" cy="162" r="2.5"/><circle cx="336" cy="162" r="2.5"/>
+          </g>
+          <!-- earrings -->
+          <circle cx="278" cy="104" r="4" fill="none" stroke="#d4a843" stroke-width="2"/>
+          <circle cx="322" cy="104" r="4" fill="none" stroke="#d4a843" stroke-width="2"/>
+          <!-- floating petals -->
+          <g opacity=".6">
+            <ellipse cx="420" cy="80" rx="14" ry="7" fill="#d4a843" transform="rotate(25 420 80)"/>
+            <ellipse cx="445" cy="115" rx="10" ry="5" fill="#c4718a" transform="rotate(-15 445 115)"/>
+            <ellipse cx="400" cy="140" rx="8" ry="4" fill="#d4a843" transform="rotate(40 400 140)"/>
+            <ellipse cx="460" cy="60" rx="7" ry="3.5" fill="#c4718a" transform="rotate(5 460 60)"/>
+            <ellipse cx="140" cy="50" rx="11" ry="5.5" fill="#d4a843" transform="rotate(-30 140 50)"/>
+            <ellipse cx="160" cy="80" rx="8" ry="4" fill="#c4718a" transform="rotate(20 160 80)"/>
+          </g>
+          <!-- studio backdrop suggestion -->
+          <rect x="0" y="420" width="600" height="40" fill="#1a0d18" opacity=".7"/>
+          <line x1="0" y1="420" x2="600" y2="420" stroke="#3a2a3a" stroke-width="1"/>
+        </svg>
+      </div>
+    </div>
+    <div class="ed-text">
+      <p class="eyebrow">Style Notes</p>
+      <h2 class="ed-title" style="font-family:'Playfair Display',serif">Dressing for the In-Between Seasons</h2>
+      <p class="ed-copy">Monsoon calls for fabrics that breathe but silhouettes that hold their shape. Our studio editors pick the transitional pieces that carry you from a humid morning commute to an air-conditioned evening — effortlessly.</p>
+      <button class="btn-primary">Read the Edit</button>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<footer>
+  <div class="foot-inner">
+    <div>
+      <div class="foot-brand">Arko Vastra</div>
+      <p class="foot-copy">Contemporary Indian fashion for the modern woman. Made with care, worn with pride.</p>
+    </div>
+    <div>
+      <p class="foot-head">Shop</p>
+      <ul>
+        <li><a href="#categories">Western Outfits</a></li>
+        <li><a href="#categories">Straight-Fit</a></li>
+        <li><a href="#categories">Traditional Fusion</a></li>
+        <li><a href="#categories">Custom Designs</a></li>
+      </ul>
+    </div>
+    <div>
+      <p class="foot-head">Help</p>
+      <ul>
+        <li><a href="#">Shipping Policy</a></li>
+        <li><a href="#">Returns & Exchange</a></li>
+        <li><a href="#">Size Guide</a></li>
+        <li><a href="#">Contact Us</a></li>
+      </ul>
+    </div>
+    <div>
+      <p class="foot-head">Follow Us</p>
+      <div class="soc-row">
+        <button class="soc-btn" aria-label="Instagram"><i class="ti ti-brand-instagram" aria-hidden="true"></i></button>
+        <button class="soc-btn" aria-label="Facebook"><i class="ti ti-brand-facebook" aria-hidden="true"></i></button>
+        <button class="soc-btn" aria-label="Pinterest"><i class="ti ti-brand-pinterest" aria-hidden="true"></i></button>
+      </div>
+    </div>
+  </div>
+  <div class="foot-bottom">
+    <span>© 2025 Arko Vastra. All rights reserved.</span>
+    <span>Made with ♥ in India</span>
+  </div>
+</footer>
+
+<script>
+function toggleWish(btn){btn.classList.toggle('active')}
+function filterCat(cat){
+  const labels={western:'Western Outfits',straight:'Straight-Fit',traditional:'Traditional Fusion',custom:'Custom Designs'};
+  document.getElementById('cat-msg').textContent='Showing picks for '+labels[cat]+' →';
+  const cards=[...document.querySelectorAll('.prod-card')];
+  let found=0;
+  cards.forEach(c=>{
+    const show=(c.dataset.tags||'').toLowerCase().includes(cat);
+    c.style.display=show?'':'none';
+    if(show)found++;
+  });
+  document.getElementById('emptyMsg').style.display=found===0?'block':'none';
+  document.getElementById('trending').scrollIntoView({behavior:'smooth'});
+}
+document.getElementById('searchInput').addEventListener('input',function(){
+  const term=this.value.trim().toLowerCase();
+  const cards=[...document.querySelectorAll('.prod-card')];
+  let found=0;
+  cards.forEach(c=>{
+    const show=!term||(c.dataset.tags||'').toLowerCase().includes(term);
+    c.style.display=show?'':'none';
+    if(show)found++;
+  });
+  document.getElementById('emptyMsg').style.display=found===0?'block':'none';
+  if(!term)document.getElementById('cat-msg').textContent='';
+});
+</script>
+</body>
 </html>
