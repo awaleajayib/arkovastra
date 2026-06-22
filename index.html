@@ -1,0 +1,333 @@
+<!doctype html>
+<html lang="en">
+ <head><script src="/_sdk/telemetry_sdk.js"></script>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Arko Vastra</title>
+  <script src="https://cdn.tailwindcss.com/3.4.17"></script>
+  <script src="https://cdn.jsdelivr.net/npm/lucide@0.263.0/dist/umd/lucide.min.js"></script>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&amp;family=Playfair+Display:wght@500;600;700&amp;display=swap" rel="stylesheet">
+  <style>
+    :root{
+      --ink:#1f1a18;
+      --muted:#746b66;
+      --rose:#b45769;
+      --rose-deep:#9c4052;
+      --cream:#f8f3ef;
+      --line:#e9dfd8;
+      --sand:#eadfd7;
+    }
+    *{box-sizing:border-box}
+    html{scroll-behavior:smooth}
+    body{
+      margin:0;
+      font-family:'DM Sans', sans-serif;
+      color:var(--ink);
+    }
+    .serif{font-family:'Playfair Display', serif}
+    .nav-link{
+      position:relative;
+      white-space:nowrap;
+    }
+    .nav-link:after{
+      content:"";
+      position:absolute;
+      left:0;
+      bottom:-10px;
+      width:0;
+      height:2px;
+      background:var(--rose);
+      transition:width .25s ease;
+    }
+    .nav-link:hover:after,.nav-link:focus-visible:after{width:100%}
+    .hero-overlay{
+      background:linear-gradient(90deg, rgba(22,18,17,.74) 0%, rgba(22,18,17,.38) 42%, rgba(22,18,17,.08) 100%);
+    }
+    .category-card img,.product-card img,.editorial-img{
+      transition:transform .45s ease;
+    }
+    .category-card:hover img,.product-card:hover img,.editorial-wrap:hover .editorial-img{
+      transform:scale(1.045);
+    }
+    .product-card{
+      transition:transform .25s ease, box-shadow .25s ease;
+    }
+    .product-card:hover{
+      transform:translateY(-5px);
+      box-shadow:0 16px 34px rgba(36,28,24,.10);
+    }
+    .wishlist-btn.active{
+      color:var(--rose);
+      background:#fff1f3;
+      border-color:#e7a7b3;
+    }
+    .wishlist-btn.active svg{
+      fill:currentColor;
+    }
+    .fade-up{
+      opacity:0;
+      transform:translateY(18px);
+      animation:fadeUp .75s ease forwards;
+    }
+    .delay-1{animation-delay:.12s}
+    .delay-2{animation-delay:.24s}
+    .delay-3{animation-delay:.36s}
+    @keyframes fadeUp{
+      to{opacity:1;transform:translateY(0)}
+    }
+    .focus-ring:focus-visible{
+      outline:3px solid rgba(180,87,105,.35);
+      outline-offset:3px;
+    }
+    @media (max-width:768px){
+      .hero-overlay{
+        background:linear-gradient(180deg, rgba(20,17,16,.25) 0%, rgba(20,17,16,.78) 100%);
+      }
+    }
+  </style>
+  <script src="/_sdk/data_sdk.js" type="text/javascript"></script>
+  <script src="/_sdk/resizing_sdk.js" type="text/javascript"></script>
+ </head>
+ <body data-template-id="__page-root" class="w-full min-h-screen">
+  <div class="w-full">
+   <div data-template-id="promo-strip" class="canva-banner w-full text-center py-2 px-4">
+    <p data-template-id="promo-strip-text" class="canva-text text-sm tracking-wide"></p>
+   </div>
+   <header data-template-id="header-bg" class="canva-header sticky top-0 z-40 bg-white/95 backdrop-blur border-b border-[#eee7e1]">
+    <div class="w-full max-w-[1440px] mx-auto px-5 lg:px-10">
+     <div class="h-20 flex items-center gap-6 lg:gap-9">
+      <div class="shrink-0">
+       <h1 data-template-id="brand-logo" class="canva-text serif tracking-[0.08em]"></h1>
+      </div>
+      <nav class="hidden lg:flex items-center gap-7 text-[13px] font-semibold tracking-[0.08em] uppercase"><a data-template-id="nav-western" href="#categories" class="canva-link nav-link focus-ring"></a> <a data-template-id="nav-straightfit" href="#categories" class="canva-link nav-link focus-ring"></a> <a data-template-id="nav-traditional" href="#categories" class="canva-link nav-link focus-ring"></a> <a data-template-id="nav-custom" href="#categories" class="canva-link nav-link focus-ring"></a> <a data-template-id="nav-studio" href="#style-notes" class="canva-link nav-link focus-ring"></a>
+      </nav>
+      <div class="ml-auto hidden md:flex items-center bg-[#f6f3f1] rounded-sm px-4 py-3 w-[30%] min-w-[240px]"><i data-lucide="search" class="w-4 h-4 text-[#7b7470] mr-3"></i> <label for="product-search" class="sr-only">Search products</label> <input id="product-search" data-template-id="search-input" class="canva-input bg-transparent outline-none text-sm w-full placeholder:text-[#8b8581]" type="text">
+      </div>
+      <div class="ml-auto md:ml-0 flex items-center gap-4 lg:gap-5"><button class="focus-ring flex flex-col items-center gap-1 text-[#3d3937] hover:text-[#b45769] transition" type="button" aria-label="Profile"> <i data-lucide="user" class="w-5 h-5"></i> <span data-template-id="profile-label" class="canva-text hidden sm:block text-[10px] font-semibold uppercase tracking-wide"></span> </button> <button class="focus-ring flex flex-col items-center gap-1 text-[#3d3937] hover:text-[#b45769] transition" type="button" aria-label="Wishlist"> <i data-lucide="heart" class="w-5 h-5"></i> <span data-template-id="wishlist-label" class="canva-text hidden sm:block text-[10px] font-semibold uppercase tracking-wide"></span> </button> <button class="focus-ring relative flex flex-col items-center gap-1 text-[#3d3937] hover:text-[#b45769] transition" type="button" aria-label="Shopping bag"> <i data-lucide="shopping-bag" class="w-5 h-5"></i> <span class="absolute -top-2 -right-2 bg-[#b45769] text-white text-[9px] rounded-full min-w-[16px] h-4 flex items-center justify-center">2</span> <span data-template-id="bag-label" class="canva-text hidden sm:block text-[10px] font-semibold uppercase tracking-wide"></span> </button>
+      </div>
+     </div>
+     <nav class="lg:hidden overflow-x-auto flex gap-6 pb-3 text-[12px] font-semibold tracking-[0.08em] uppercase"><a data-template-id="mobile-nav-western" href="#categories" class="canva-link whitespace-nowrap"></a> <a data-template-id="mobile-nav-straightfit" href="#categories" class="canva-link whitespace-nowrap"></a> <a data-template-id="mobile-nav-traditional" href="#categories" class="canva-link whitespace-nowrap"></a> <a data-template-id="mobile-nav-custom" href="#categories" class="canva-link whitespace-nowrap"></a> <a data-template-id="mobile-nav-studio" href="#style-notes" class="canva-link whitespace-nowrap"></a>
+     </nav>
+    </div>
+   </header>
+   <main>
+    <section class="w-full">
+     <div class="relative w-full overflow-hidden min-h-[520px] md:min-h-[620px]"><img data-template-id="hero-image" class="canva-image absolute inset-0 w-full h-full object-cover" loading="lazy">
+      <div class="hero-overlay absolute inset-0"></div>
+      <div class="relative z-10 max-w-[1440px] mx-auto min-h-[520px] md:min-h-[620px] px-6 lg:px-12 flex items-center">
+       <div class="max-w-[640px] text-white pt-12">
+        <p data-template-id="hero-eyebrow" class="canva-text fade-up text-xs md:text-sm font-semibold tracking-[0.28em] uppercase mb-4"></p>
+        <h2 data-template-id="hero-title" class="canva-text serif fade-up delay-1 leading-[1.02] mb-5 max-w-[570px]"></h2>
+        <p data-template-id="hero-subtitle" class="canva-text fade-up delay-2 text-base md:text-lg text-white/90 max-w-[470px] leading-7 mb-8"></p>
+        <div class="fade-up delay-3 flex flex-wrap gap-4"><button data-template-id="hero-primary-button" class="canva-button focus-ring px-7 py-3.5 text-sm font-semibold tracking-[0.12em] uppercase transition hover:opacity-90" type="button" id="shop-now-btn"></button> <button data-template-id="hero-secondary-button" class="canva-button focus-ring px-1 py-3.5 text-sm font-semibold tracking-[0.12em] uppercase border-b border-white/80 text-white transition hover:text-[#ffdfe5]" type="button" id="explore-edit-btn"></button>
+        </div>
+       </div>
+      </div>
+      <div data-template-id="hero-badge" class="canva-panel absolute right-6 bottom-6 md:right-12 md:bottom-10 z-10 hidden sm:flex flex-col items-center justify-center w-28 h-28 rounded-full text-center rotate-[-8deg] shadow-lg"><span data-template-id="hero-badge-small" class="canva-text text-[10px] tracking-[0.18em] uppercase font-semibold"></span> <span data-template-id="hero-badge-large" class="canva-text serif leading-none my-1"></span> <span data-template-id="hero-badge-bottom" class="canva-text text-[10px] tracking-[0.12em] uppercase font-semibold"></span>
+      </div>
+     </div>
+    </section>
+    <section data-template-id="benefits-strip" class="canva-section border-b border-[#eee6df]">
+     <div class="max-w-[1200px] mx-auto px-5 py-5 grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-0">
+      <div class="flex items-center justify-center gap-3 md:border-r md:border-[#e8ddd5]"><i data-lucide="truck" class="w-5 h-5 text-[#b45769]"></i>
+       <p data-template-id="benefit-1" class="canva-text text-sm font-medium tracking-wide"></p>
+      </div>
+      <div class="flex items-center justify-center gap-3 md:border-r md:border-[#e8ddd5]"><i data-lucide="scissors" class="w-5 h-5 text-[#b45769]"></i>
+       <p data-template-id="benefit-2" class="canva-text text-sm font-medium tracking-wide"></p>
+      </div>
+      <div class="flex items-center justify-center gap-3"><i data-lucide="badge-check" class="w-5 h-5 text-[#b45769]"></i>
+       <p data-template-id="benefit-3" class="canva-text text-sm font-medium tracking-wide"></p>
+      </div>
+     </div>
+    </section>
+    <section id="categories" class="max-w-[1440px] mx-auto px-5 lg:px-10 py-16 md:py-20">
+     <div class="flex flex-col md:flex-row md:items-end md:justify-between gap-4 mb-9">
+      <div>
+       <p data-template-id="categories-eyebrow" class="canva-text text-xs tracking-[0.22em] uppercase font-semibold mb-3"></p>
+       <h2 data-template-id="categories-title" class="canva-text serif"></h2>
+      </div>
+      <p data-template-id="categories-subtitle" class="canva-text text-sm md:text-base text-[#776f6b] max-w-[430px]"></p>
+     </div>
+     <div class="grid grid-cols-2 lg:grid-cols-4 gap-4 md:gap-5"><button class="category-card focus-ring relative overflow-hidden group aspect-[3/4]" data-category="Western Outfits" type="button"> <img data-template-id="category-western-image" class="canva-image w-full h-full object-cover" loading="lazy">
+       <div class="absolute inset-0 bg-gradient-to-t from-black/60 via-black/10 to-transparent"></div>
+       <div class="absolute left-4 right-4 bottom-4 text-left">
+        <p data-template-id="category-western-label" class="canva-text text-white serif"></p><span data-template-id="category-western-cta" class="canva-text text-white/90 text-xs uppercase tracking-[0.18em] mt-1 inline-block"></span>
+       </div></button> <button class="category-card focus-ring relative overflow-hidden group aspect-[3/4]" data-category="Straight-Fit" type="button"> <img data-template-id="category-straightfit-image" class="canva-image w-full h-full object-cover" loading="lazy">
+       <div class="absolute inset-0 bg-gradient-to-t from-black/60 via-black/10 to-transparent"></div>
+       <div class="absolute left-4 right-4 bottom-4 text-left">
+        <p data-template-id="category-straightfit-label" class="canva-text text-white serif"></p><span data-template-id="category-straightfit-cta" class="canva-text text-white/90 text-xs uppercase tracking-[0.18em] mt-1 inline-block"></span>
+       </div></button> <button class="category-card focus-ring relative overflow-hidden group aspect-[3/4]" data-category="Traditional Fusion" type="button"> <img data-template-id="category-traditional-image" class="canva-image w-full h-full object-cover" loading="lazy">
+       <div class="absolute inset-0 bg-gradient-to-t from-black/60 via-black/10 to-transparent"></div>
+       <div class="absolute left-4 right-4 bottom-4 text-left">
+        <p data-template-id="category-traditional-label" class="canva-text text-white serif"></p><span data-template-id="category-traditional-cta" class="canva-text text-white/90 text-xs uppercase tracking-[0.18em] mt-1 inline-block"></span>
+       </div></button> <button class="category-card focus-ring relative overflow-hidden group aspect-[3/4]" data-category="Custom Designs" type="button"> <img data-template-id="category-custom-image" class="canva-image w-full h-full object-cover" loading="lazy">
+       <div class="absolute inset-0 bg-gradient-to-t from-black/60 via-black/10 to-transparent"></div>
+       <div class="absolute left-4 right-4 bottom-4 text-left">
+        <p data-template-id="category-custom-label" class="canva-text text-white serif"></p><span data-template-id="category-custom-cta" class="canva-text text-white/90 text-xs uppercase tracking-[0.18em] mt-1 inline-block"></span>
+       </div></button>
+     </div>
+     <p id="category-message" class="mt-5 text-sm text-[#8a7770]" aria-live="polite"></p>
+    </section>
+    <section data-template-id="sale-banner-bg" class="canva-section max-w-[1440px] mx-auto px-5 lg:px-10 mb-16 md:mb-20">
+     <div class="relative overflow-hidden min-h-[280px] md:min-h-[340px]"><img data-template-id="sale-banner-image" class="canva-image absolute inset-0 w-full h-full object-cover" loading="lazy">
+      <div class="absolute inset-0 bg-gradient-to-r from-[#1b1615]/85 via-[#1b1615]/45 to-transparent"></div>
+      <div class="relative z-10 min-h-[280px] md:min-h-[340px] flex items-center px-7 md:px-12">
+       <div class="max-w-[520px] text-white">
+        <p data-template-id="sale-eyebrow" class="canva-text text-xs uppercase tracking-[0.24em] font-semibold mb-3"></p>
+        <h2 data-template-id="sale-title" class="canva-text serif leading-tight mb-3"></h2>
+        <p data-template-id="sale-copy" class="canva-text text-white/85 text-sm md:text-base mb-6 max-w-[430px]"></p><button data-template-id="sale-button" id="sale-shop-btn" type="button" class="canva-button focus-ring px-6 py-3 text-sm uppercase font-semibold tracking-[0.12em]"></button>
+       </div>
+      </div>
+     </div>
+    </section>
+    <section id="trending" class="max-w-[1440px] mx-auto px-5 lg:px-10 pb-16 md:pb-20">
+     <div class="flex flex-col md:flex-row md:items-end md:justify-between gap-4 mb-9">
+      <div>
+       <p data-template-id="trending-eyebrow" class="canva-text text-xs uppercase tracking-[0.22em] font-semibold mb-3"></p>
+       <h2 data-template-id="trending-title" class="canva-text serif"></h2>
+      </div><button data-template-id="view-all-button" class="canva-button focus-ring self-start md:self-auto text-sm font-semibold uppercase tracking-[0.16em] border-b border-[#2f2a27] pb-1" type="button"></button>
+     </div>
+     <div id="product-grid" class="grid grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6">
+      <article class="product-card bg-white border border-[#efe8e3]" data-product-name="printed western dress women fusion outfit">
+       <div class="relative overflow-hidden aspect-[3/4]"><img data-template-id="product-1-image" class="canva-image w-full h-full object-cover" loading="lazy"> <button class="wishlist-btn focus-ring absolute top-3 right-3 w-9 h-9 rounded-full bg-white/90 border border-white flex items-center justify-center transition" type="button" aria-label="Add product to wishlist"> <i data-lucide="heart" class="w-4 h-4"></i> </button>
+       </div>
+       <div class="p-4">
+        <p data-template-id="product-1-brand" class="canva-text text-sm font-semibold mb-1"></p>
+        <p data-template-id="product-1-title" class="canva-text text-sm text-[#716b67] mb-2"></p>
+        <div class="flex flex-wrap items-baseline gap-2"><span data-template-id="product-1-price" class="canva-text text-sm font-semibold"></span> <span data-template-id="product-1-old-price" class="canva-text text-xs line-through text-[#9d9691]"></span> <span data-template-id="product-1-discount" class="canva-text text-xs text-[#b45769]"></span>
+        </div>
+       </div>
+      </article>
+      <article class="product-card bg-white border border-[#efe8e3]" data-product-name="straight fit trousers women co ord set">
+       <div class="relative overflow-hidden aspect-[3/4]"><img data-template-id="product-2-image" class="canva-image w-full h-full object-cover" loading="lazy"> <button class="wishlist-btn focus-ring absolute top-3 right-3 w-9 h-9 rounded-full bg-white/90 border border-white flex items-center justify-center transition" type="button" aria-label="Add product to wishlist"> <i data-lucide="heart" class="w-4 h-4"></i> </button>
+       </div>
+       <div class="p-4">
+        <p data-template-id="product-2-brand" class="canva-text text-sm font-semibold mb-1"></p>
+        <p data-template-id="product-2-title" class="canva-text text-sm text-[#716b67] mb-2"></p>
+        <div class="flex flex-wrap items-baseline gap-2"><span data-template-id="product-2-price" class="canva-text text-sm font-semibold"></span> <span data-template-id="product-2-old-price" class="canva-text text-xs line-through text-[#9d9691]"></span> <span data-template-id="product-2-discount" class="canva-text text-xs text-[#b45769]"></span>
+        </div>
+       </div>
+      </article>
+      <article class="product-card bg-white border border-[#efe8e3]" data-product-name="kurti fusion traditional women">
+       <div class="relative overflow-hidden aspect-[3/4]"><img data-template-id="product-3-image" class="canva-image w-full h-full object-cover" loading="lazy"> <button class="wishlist-btn focus-ring absolute top-3 right-3 w-9 h-9 rounded-full bg-white/90 border border-white flex items-center justify-center transition" type="button" aria-label="Add product to wishlist"> <i data-lucide="heart" class="w-4 h-4"></i> </button>
+       </div>
+       <div class="p-4">
+        <p data-template-id="product-3-brand" class="canva-text text-sm font-semibold mb-1"></p>
+        <p data-template-id="product-3-title" class="canva-text text-sm text-[#716b67] mb-2"></p>
+        <div class="flex flex-wrap items-baseline gap-2"><span data-template-id="product-3-price" class="canva-text text-sm font-semibold"></span> <span data-template-id="product-3-old-price" class="canva-text text-xs line-through text-[#9d9691]"></span> <span data-template-id="product-3-discount" class="canva-text text-xs text-[#b45769]"></span>
+        </div>
+       </div>
+      </article>
+      <article class="product-card bg-white border border-[#efe8e3]" data-product-name="blazer set women western co ord">
+       <div class="relative overflow-hidden aspect-[3/4]"><img data-template-id="product-4-image" class="canva-image w-full h-full object-cover" loading="lazy"> <button class="wishlist-btn focus-ring absolute top-3 right-3 w-9 h-9 rounded-full bg-white/90 border border-white flex items-center justify-center transition" type="button" aria-label="Add product to wishlist"> <i data-lucide="heart" class="w-4 h-4"></i> </button>
+       </div>
+       <div class="p-4">
+        <p data-template-id="product-4-brand" class="canva-text text-sm font-semibold mb-1"></p>
+        <p data-template-id="product-4-title" class="canva-text text-sm text-[#716b67] mb-2"></p>
+        <div class="flex flex-wrap items-baseline gap-2"><span data-template-id="product-4-price" class="canva-text text-sm font-semibold"></span> <span data-template-id="product-4-old-price" class="canva-text text-xs line-through text-[#9d9691]"></span> <span data-template-id="product-4-discount" class="canva-text text-xs text-[#b45769]"></span>
+        </div>
+       </div>
+      </article>
+     </div>
+     <p id="empty-search" class="hidden text-center py-12 text-[#7b7470]">No products found for your search.</p>
+    </section>
+    <section id="style-notes" data-template-id="editorial-bg" class="canva-section py-16 md:py-20">
+     <div class="max-w-[1440px] mx-auto px-5 lg:px-10 grid lg:grid-cols-2 gap-8 lg:gap-12 items-center">
+      <div class="editorial-wrap overflow-hidden"><img data-template-id="editorial-image" class="canva-image editorial-img w-full h-[360px] md:h-[520px] object-cover" loading="lazy">
+      </div>
+      <div class="max-w-[540px] lg:pl-4">
+       <p data-template-id="editorial-eyebrow" class="canva-text text-xs uppercase tracking-[0.22em] font-semibold mb-4"></p>
+       <h2 data-template-id="editorial-title" class="canva-text serif leading-tight mb-5"></h2>
+       <p data-template-id="editorial-copy" class="canva-text text-[#6f6763] leading-7 mb-7"></p><button data-template-id="editorial-button" class="canva-button focus-ring px-6 py-3 text-sm uppercase tracking-[0.12em] font-semibold" type="button"></button>
+      </div>
+     </div>
+    </section>
+   </main>
+   <footer data-template-id="footer-bg" class="canva-footer">
+    <div class="max-w-[1440px] mx-auto px-5 lg:px-10 py-12">
+     <div class="grid md:grid-cols-4 gap-8">
+      <div>
+       <h2 data-template-id="footer-brand" class="canva-text serif mb-4"></h2>
+       <p data-template-id="footer-copy" class="canva-text text-sm leading-6 max-w-[260px]"></p>
+      </div>
+      <div>
+       <h3 data-template-id="footer-shop-heading" class="canva-text text-sm font-semibold uppercase tracking-[0.16em] mb-4"></h3>
+       <ul class="space-y-2 text-sm">
+        <li><a data-template-id="footer-shop-1" class="canva-link hover:text-[#b45769]" href="#categories"></a></li>
+        <li><a data-template-id="footer-shop-2" class="canva-link hover:text-[#b45769]" href="#categories"></a></li>
+        <li><a data-template-id="footer-shop-3" class="canva-link hover:text-[#b45769]" href="#categories"></a></li>
+        <li><a data-template-id="footer-shop-4" class="canva-link hover:text-[#b45769]" href="#categories"></a></li>
+       </ul>
+      </div>
+      <div>
+       <h3 data-template-id="footer-help-heading" class="canva-text text-sm font-semibold uppercase tracking-[0.16em] mb-4"></h3>
+       <ul class="space-y-2 text-sm">
+        <li><a data-template-id="footer-help-1" class="canva-link hover:text-[#b45769]" href="#"></a></li>
+        <li><a data-template-id="footer-help-2" class="canva-link hover:text-[#b45769]" href="#"></a></li>
+        <li><a data-template-id="footer-help-3" class="canva-link hover:text-[#b45769]" href="#"></a></li>
+        <li><a data-template-id="footer-help-4" class="canva-link hover:text-[#b45769]" href="#"></a></li>
+       </ul>
+      </div>
+      <div>
+       <h3 data-template-id="footer-social-heading" class="canva-text text-sm font-semibold uppercase tracking-[0.16em] mb-4"></h3>
+       <div class="flex gap-3"><button class="focus-ring w-10 h-10 rounded-full border border-[#ded3cb] flex items-center justify-center hover:bg-[#f7ecee]" type="button" aria-label="Instagram"><i data-lucide="instagram" class="w-4 h-4"></i></button> <button class="focus-ring w-10 h-10 rounded-full border border-[#ded3cb] flex items-center justify-center hover:bg-[#f7ecee]" type="button" aria-label="Facebook"><i data-lucide="facebook" class="w-4 h-4"></i></button> <button class="focus-ring w-10 h-10 rounded-full border border-[#ded3cb] flex items-center justify-center hover:bg-[#f7ecee]" type="button" aria-label="Twitter"><i data-lucide="twitter" class="w-4 h-4"></i></button>
+       </div>
+      </div>
+     </div>
+     <div class="mt-10 pt-6 border-t border-[#dfd5ce] flex flex-col sm:flex-row justify-between gap-3 text-xs text-[#827974]">
+      <p data-template-id="footer-copyright" class="canva-text"></p>
+      <p data-template-id="footer-note" class="canva-text"></p>
+     </div>
+    </div>
+   </footer>
+  </div>
+  <script src="/_sdk/editing_sdk.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      lucide.createIcons();
+
+      const scrollToTrending = () => {
+        document.getElementById('trending').scrollIntoView({ behavior: 'smooth' });
+      };
+
+      document.getElementById('shop-now-btn').addEventListener('click', scrollToTrending);
+      document.getElementById('sale-shop-btn').addEventListener('click', scrollToTrending);
+      document.getElementById('explore-edit-btn').addEventListener('click', () => {
+        document.getElementById('categories').scrollIntoView({ behavior: 'smooth' });
+      });
+
+      document.querySelectorAll('.wishlist-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+          btn.classList.toggle('active');
+          btn.setAttribute('aria-pressed', String(btn.classList.contains('active')));
+        });
+      });
+
+      const categoryMessage = document.getElementById('category-message');
+      document.querySelectorAll('.category-card').forEach(card => {
+        card.addEventListener('click', () => {
+          categoryMessage.textContent = `Showing curated picks for ${card.dataset.category}.`;
+          document.getElementById('trending').scrollIntoView({ behavior: 'smooth' });
+        });
+      });
+
+      const searchInput = document.getElementById('product-search');
+      const products = Array.from(document.querySelectorAll('.product-card'));
+      const emptySearch = document.getElementById('empty-search');
+
+      searchInput.addEventListener('input', (event) => {
+        const term = event.target.value.trim().toLowerCase();
+        let visibleCount = 0;
+
+        products.forEach(card => {
+          const visible = !term || card.dataset.productName.toLowerCase().includes(term);
+          card.classList.toggle('hidden', !visible);
+          if (visible) visibleCount++;
+        });
+
+        emptySearch.classList.toggle('hidden', visibleCount !== 0);
+      });
+    });
+  </script>
+ <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'a0f8ecb6e0d40b19',t:'MTc4MjEwNjg5NC4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+</html>
